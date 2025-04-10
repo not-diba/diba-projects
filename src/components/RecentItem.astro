@@ -1,11 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
-import Tooltip from "./Tooltip.astro";
 
 const { title, description, img, url } = Astro.props;
 ---
 
-<Tooltip text={title} id={`id-${title}`}>
+
   <a
     class="border-[#232323] border bg-[#0a090f] flex gap-3 h-18 lg:w-[300px] md:w-[300px] w-full rounded-lg p-1.5 cursor-pointer
   group transition-transform duration-300 ease-out hover:scale-110 hover:-skew-1 justify-between"
@@ -34,4 +33,3 @@ const { title, description, img, url } = Astro.props;
       <Icon name="arrow_right_line" class="size-5" />
     </div>
   </a>
-</Tooltip>
