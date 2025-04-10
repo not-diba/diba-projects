@@ -28,10 +28,10 @@ const { goBack } = Astro.props;
             <NavLink label="Home" route="/" />
           </Tooltip>
           <Tooltip text="My articles 📚" id="writing">
-            <NavLink label="Writing" route="/writing" />
+            <NavLink label="Writing" route="/writing/" />
           </Tooltip>
           <Tooltip text="My projects 💻" id="crafts">
-            <NavLink label="Crafts" route="/crafts" />
+            <NavLink label="Crafts" route="/crafts/" />
           </Tooltip>
         </div>
       )
@@ -89,10 +89,10 @@ const { goBack } = Astro.props;
           <div>
             <div class="cursor-pointer" id="navToggle">
               {Astro.url.pathname == "/" && <NavLink label="Home" route="/" />}
-              {Astro.url.pathname == "/writing" && (
+              {Astro.url.pathname == "/writing/" && (
                 <NavLink label="Writing" route="/writing" />
               )}
-              {Astro.url.pathname == "/crafts" && (
+              {Astro.url.pathname == "/crafts/" && (
                 <NavLink label="Crafts" route="/crafts" />
               )}
             </div>
