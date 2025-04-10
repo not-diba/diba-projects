@@ -1,11 +1,52 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import RecentItem from "../components/RecentItem.astro";
+import Robot from "../components/Robot.astro";
+import { getCollection } from "astro:content";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const articles = await getCollection("writing");
+const recentArticles = articles.slice(0, 3);
+
+const crafts = await getCollection("crafts");
+const recentCrafts = crafts.slice(0, 3);
 ---
 
 <Layout>
-	<Welcome />
+  <div class="w-full h-full flex flex-col justify-center pt-8 md:pt-0 lg:pt-0">
+    <div class="w-full h-full flex flex-col lg:flex-row md:flex-row justify-between">
+      <div class="flex flex-col w-full md:w-[300px] lg:w-[300px] gap-3 self-center">
+        <p>RECENT WRITINGS</p>
+        <div class="flex flex-col gap-4 w-full">
+          {
+            recentArticles.map((article) => (
+              <RecentItem
+                title={article.data.title}
+                description={article.data.description}
+                img={article.data.image.url}
+                url={`/writing/${article.id}`}
+              />
+            ))
+          }
+        </div>
+      </div>
+
+      <Robot />
+
+      <div class="flex flex-col w-full md:w-[300px] lg:w-[300px] gap-3 self-center pb-64 md:pb-0 lg:pb-0">
+        <p>RECENT CRAFTS</p>
+        <div class="flex flex-col gap-4 w-full">
+          {
+            recentCrafts.map((craft) => (
+              <RecentItem
+                title={craft.data.title}
+                description={craft.data.description}
+                img={craft.data.image.url}
+                url={`/craft/${craft.id}`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>

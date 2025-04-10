@@ -1,0 +1,48 @@
+---
+const { text, id } = Astro.props;
+const tooltipId = id || "tooltip";
+---
+
+<div class="relative group inline-block">
+  <div id={`${tooltipId}-wrapper`} data-tooltip-id={tooltipId}>
+    <slot />
+  </div>
+
+  <div
+    id={`${tooltipId}`}
+    class="fixed bg-[#efefe5] text-[#0a090f] text-xs font-medium px-2 py-1 rounded-sm
+    opacity-0 pointer-events-none transition-opacity duration-200 z-10000"
+  >
+    {text}
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const wrappers = document.querySelectorAll("[data-tooltip-id]");
+
+      wrappers.forEach((wrapper) => {
+        const tooltipId = wrapper.getAttribute("data-tooltip-id");
+        const tooltip = document.getElementById(tooltipId!);
+        if (!tooltip) return;
+
+        function handleMouseEnter() {
+          document.addEventListener("mousemove", updateTooltip);
+          tooltip!.style.opacity = "1";
+        }
+
+        function handleMouseLeave() {
+          document.removeEventListener("mousemove", updateTooltip);
+          tooltip!.style.opacity = "0";
+        }
+
+        function updateTooltip(event: { pageX: number; pageY: number }) {
+          tooltip!.style.left = event.pageX + 10 + "px";
+          tooltip!.style.top = event.pageY + 15 + "px";
+        }
+
+        wrapper.addEventListener("mouseenter", handleMouseEnter);
+        wrapper.addEventListener("mouseleave", handleMouseLeave);
+      });
+    });
+  </script>
+</div>

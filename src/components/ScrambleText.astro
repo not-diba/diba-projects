@@ -1,0 +1,56 @@
+---
+const props = Astro.props;
+const text: String = props.text;
+---
+
+<p
+  class="shuffle inline-block cursor-pointer whitespace-pre-line"
+  data-text={text}
+>
+  {text}
+</p>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const shuffledEls = document.querySelectorAll(".shuffle");
+    const duration = 60; // Speed of effect
+    const scrambleChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=<>?/";
+
+    shuffledEls.forEach((shuffledEl) => {
+      let textOrig = shuffledEl.getAttribute("data-text") || "";
+      let inter: number | undefined;
+      let progress = 0;
+
+      shuffledEl.addEventListener("mouseover", () => {
+        progress = 0;
+
+        inter = setInterval(() => {
+          if (progress <= textOrig.length) {
+            shuffledEl.innerText =
+              textOrig.slice(0, progress) +
+              scrambleText(textOrig.length - progress);
+            progress++;
+          } else {
+            clearInterval(inter);
+            shuffledEl.innerText = textOrig;
+          }
+        }, duration);
+      });
+
+      shuffledEl.addEventListener("mouseleave", () => {
+        clearInterval(inter);
+        shuffledEl.innerText = textOrig;
+      });
+    });
+
+    function scrambleText(length: number) {
+      let result = "";
+      for (let i = 0; i < length; i++) {
+        result +=
+          scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+      }
+      return result;
+    }
+  });
+</script>

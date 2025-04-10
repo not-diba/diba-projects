@@ -1,22 +1,62 @@
+---
+import Nav from "../components/Nav.astro";
+import ScrambleText from "../components/ScrambleText.astro";
+import Tooltip from "../components/Tooltip.astro";
+import "../styles/global.css";
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>diba .projects</title>
+  </head>
+  <body
+    class="flex flex-col h-fit md:h-screen lg:h-screen w-full px-4 sm:px-8 md:px-18 lg:px-18 pt-8 bg-[#0a090f] font-sans text-[#efefe5] text-xl md:overscroll-none md:overflow-hidden bg-[url('src/assets/bg.svg')] bg-cover bg-center bg-no-repeat"
+  >
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-14">
+        <a href="/">
+          <img
+            src="/diba-projects.svg"
+            alt="Diba Projects"
+            class="h-16 cursor-pointer"
+          />
+        </a>
+        <div class="hidden lg:flex gap-28 text-sm items-center">
+          <Tooltip text="About me" id="about-me">
+            <ScrambleText text="ELVIS MADIBA [KE]" />
+          </Tooltip>
+          <div class="flex flex-col">
+            <div class="flex">
+              <Tooltip
+                text="I build cool things with code!"
+                id="software-eng-tooltip"
+              >
+                <ScrambleText text="SOFTWARE ENGINEER" />
+              </Tooltip>
+              <p class="pl-2">/</p>
+            </div>
+            <Tooltip text="I build cool tech projects" id="elec-eng-tooltip">
+              <ScrambleText text="ELECTRICAL ENGINEER" />
+            </Tooltip>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-3 items-center text-sm">
+        <div class="size-1.5 bg-red-500 rounded-full"></div>
+        <Tooltip
+          text="Mobile apps, websites, games, server architecture, IoT."
+          id="work"
+        >
+          <ScrambleText text="AVAILABLE FOR WORK" />
+        </Tooltip>
+      </div>
+    </div>
+    <slot />
+    <Nav />
+  </body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

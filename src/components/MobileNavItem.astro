@@ -1,0 +1,26 @@
+---
+import { Icon } from "astro-icon/components";
+
+const { label, route, icon } = Astro.props;
+const isActive = Astro.url.pathname === route;
+---
+
+<a
+  href={route}
+  class={`flex justify-between py-2 px-3 rounded-md ${isActive ? "bg-[#191919] border-[#232323]" : ""}`}
+>
+  <div class="flex gap-x-3 items-center pl-2 text-center">
+    <Icon
+      name={icon}
+      class={`text-xl ${isActive ? "text-white" : "text-[#a6a6a2]"}`}
+    />
+    <p class={`text-base ${isActive ? "text-white" : "text-[#a6a6a2]"}`}>{label}</p>
+  </div>
+  <div
+    class={`border-[1.2px] border-[#232323] bg-[#191919] px-3 text-center items-center rounded-md text-sm ${
+      isActive ? "text-white" : "text-[#a6a6a2]"
+    }`}
+  >
+    ~{route}
+  </div>
+</a>

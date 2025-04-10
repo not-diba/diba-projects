@@ -1,0 +1,147 @@
+<div
+  id="canvas-container"
+  class="w-full h-[400px] md:min-h-full lg:min-h-full flex items-center justify-center overflow-visible relative z-50"
+>
+</div>
+
+<script>
+  import * as THREE from "three";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+  // Setup scene, camera, and renderer
+  const container = document.getElementById("canvas-container");
+  const scene = new THREE.Scene();
+
+  // Make the background transparent
+  scene.background = null;
+
+  const camera = new THREE.PerspectiveCamera(
+    90,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    1000
+  );
+  // Position camera closer to make model appear larger
+  camera.position.set(0, 0.5, 2.5);
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true, // Enable transparency
+  });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  container.appendChild(renderer.domElement);
+
+  // Add lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambientLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+  directionalLight.position.set(1, 1, 1);
+  scene.add(directionalLight);
+
+  // Animation mixer and state
+  let mixer;
+  let animationActions = [];
+  let isPlaying = true;
+  const clock = new THREE.Clock();
+
+  // Load GLB file
+  const loader = new GLTFLoader();
+  loader.load(
+    "models/robot.glb",
+    function (gltf) {
+      const model = gltf.scene;
+      scene.add(model);
+
+      // Center the model
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      model.position.x = -center.x;
+      model.position.y = -center.y + 0.65;
+      model.position.z = -center.z;
+
+      // Get the size of the model
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+
+      // Scale the model up if it's too small
+      if (maxDim < 1) {
+        const scale = 1 / maxDim;
+        model.scale.set(scale, scale, scale);
+      }
+
+      // Set up animations
+      if (gltf.animations && gltf.animations.length) {
+        mixer = new THREE.AnimationMixer(model);
+        gltf.animations.forEach((clip) => {
+          const action = mixer.clipAction(clip);
+          action.play();
+          animationActions.push(action);
+        });
+      }
+    },
+    function (xhr) {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    },
+    function (error) {
+      console.error("An error happened", error);
+    }
+  );
+
+  // Add click event listener to toggle animation
+  container.addEventListener("click", function() {
+    if (!mixer || animationActions.length === 0) return;
+    
+    if (isPlaying) {
+      // Pause all animations
+      animationActions.forEach(action => {
+        action.paused = true;
+      });
+      isPlaying = false;
+    } else {
+      // Resume all animations
+      animationActions.forEach(action => {
+        action.paused = false;
+      });
+      isPlaying = true;
+    }
+  });
+
+  // Handle window resize to maintain proper sizing
+  window.addEventListener("resize", () => {
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Update animation mixer only if animations are playing
+    if (mixer && isPlaying) {
+      mixer.update(clock.getDelta());
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+</script>
+
+<style>
+  /* Style to ensure the canvas appears above other elements */
+  #canvas-container {
+    position: relative;
+    z-index: 50;
+    cursor: pointer; /* Add pointer cursor to indicate clickable area */
+  }
+  
+  #canvas-container canvas {
+    overflow: visible;
+    position: relative;
+    z-index: 50;
+  }
+</style>

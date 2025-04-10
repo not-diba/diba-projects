@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import ArticleCard from "../components/ArticleCard.astro";
+import Layout from "../layouts/Layout.astro";
+
+const articles = await getCollection("writing");
+---
+
+<Layout>
+  <div
+    class="pt-8 pb-96 px-10 flex flex-col md:grid md:grid-cols-3 gap-8 overflow-y-auto scrollbar-hide self-center"
+  >
+    {
+      articles.map((article: any) => (
+        <ArticleCard
+          url={`/writing/${article.id}`}
+          title={article.data.title}
+          description={article.data.description}
+          img={article.data.image.url}
+          author={article.data.author}
+          pubDate={article.data.pubDate}
+        />
+      ))
+    }
+  </div>
+</Layout>

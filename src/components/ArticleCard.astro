@@ -1,0 +1,49 @@
+---
+import { Icon } from "astro-icon/components";
+
+const { title, description, img, url, author, pubDate } = Astro.props;
+---
+
+<a href={url}>
+  <div
+    class="flex flex-col w-72 h-[400px] border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+  >
+   <!-- maybe have some cool effect on hover -->
+    <img
+      class="w-full h-1/2 min-h-1/2 object-cover rounded-md"
+      src={img}
+    />
+    <section class="px-2 flex flex-col justify-between h-full">
+      <div>
+        <h1 class="text-xl font-semibold text-red-500 pt-2 line-clamp-3">
+          {title}
+        </h1>
+        <p class="text-sm line-clamp-2 overflow-ellipsis pt-2">{description}</p>
+      </div>
+      <div
+        class="w-full flex justify-between py-2 items-center border-t border-[#232323]"
+      >
+        <div class="flex gap-1">
+          <img
+            class="size-8 rounded-full border border-[#232323]"
+            src="/favicon.svg"
+          />
+          <div class="flex flex-col">
+            <p class="text-xs font-extrabold">{author}</p>
+            <p class="text-xs font-extralight">
+              {
+                pubDate.toLocaleDateString("en-us", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  weekday: "short",
+                })
+              }
+            </p>
+          </div>
+        </div>
+        <Icon name="right_line" class="size-5" />
+      </div>
+    </section>
+  </div>
+</a>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+  <defs>
+    <linearGradient id="a_0" x1="0.7" y1="0.15574" x2="0.7" y2="1.02096" gradientTransform="matrix(10 0 0 19.944156 0 0)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#09244B"/>
+      <stop offset="100%" stop-color="#09244B" stop-opacity=".55"/>
+    </linearGradient>
+    <linearGradient id="b_0" x1="1.7" y1="0.285216" x2="1.7" y2="1.100596" gradientTransform="matrix(10.000004 0 0 18.387797 0 0)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#09244B" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#09244B" stop-opacity=".55"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#a_0)" d="M10.886,2.061 C11.435,2 11.929,2.396 11.99,2.945 C12.051,3.494 11.655,3.988 11.106,4.049 C6.895,4.531 3.791,8.214 4.028,12.446 C4.265,16.678 7.762,19.99 12,19.999 L12,21.999 C6.477,21.999 2,17.523 2,11.999 C2,6.893 5.848,2.621 10.886,2.062 Z"/>
+  <path fill="url(#b_0)" d="M16.322,4.04 C16.638,3.587 17.261,3.476 17.714,3.792 C20.401,5.66 22.002,8.727 22,12 C22,17.523 17.523,22 12,22 L12,20 C15.496,20 18.588,17.731 19.634,14.395 C20.681,11.059 19.44,7.43 16.57,5.433 C16.117,5.117 16.006,4.493 16.322,4.04"/>
+</svg>
+

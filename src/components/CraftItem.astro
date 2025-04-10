@@ -1,0 +1,34 @@
+---
+const { title, img, url, video } = Astro.props;
+
+function convertCraftName(name: String) {
+  return "craft/" + name.toLocaleLowerCase().replace(/\s/g, "-");
+}
+---
+
+<a
+  class="flex flex-col w-full sm:w-[410px] max-h-[320px] border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+  href={url}
+>
+  <div class="relative w-full h-full rounded-md group overflow-hidden">
+    <video
+      class="absolute inset-0 w-full h-full object-cover rounded-md transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+      src={video}
+      autoplay
+      loop
+      muted></video>
+
+    <img
+      class="w-full h-full object-cover rounded-md transition duration-500"
+      src={img}
+    />
+  </div>
+
+  <div
+    class="flex w-full h-14 items-center p-2 mt-1 bg-[#232323] rounded-md justify-center"
+  >
+    <p class="group-hover:text-red-500 text-center text-base mx-4">
+      {convertCraftName(title)}
+    </p>
+  </div>
+</a>

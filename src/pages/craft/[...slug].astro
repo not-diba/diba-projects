@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from "astro:content";
+import MarkdownLayout from "../../layouts/MarkdownLayout.astro";
+
+export async function getStaticPaths() {
+  const crafts = await getCollection("crafts");
+  return crafts.map((craft) => ({
+    params: { slug: craft.id },
+    props: { craft },
+  }));
+}
+
+const { craft } = Astro.props;
+const { Content } = await render(craft);
+---
+
+<MarkdownLayout frontmatter={craft.data}>
+  <Content />
+</MarkdownLayout>

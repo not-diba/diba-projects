@@ -1,0 +1,37 @@
+---
+import { Icon } from "astro-icon/components";
+import Tooltip from "./Tooltip.astro";
+
+const { title, description, img, url } = Astro.props;
+---
+
+<Tooltip text={title} id={`id-${title}`}>
+  <a
+    class="border-[#232323] border bg-[#0a090f] flex gap-3 h-18 lg:w-[300px] md:w-[300px] w-full rounded-lg p-1.5 cursor-pointer
+  group transition-transform duration-300 ease-out hover:scale-110 hover:-skew-1 justify-between"
+    href={url}
+    title=""
+  >
+    <div class="flex gap-3">
+      <img class="w-14 h-full object-cover rounded-sm" src={img} />
+
+      <div class="flex flex-col w-[150px]">
+        <p
+          class="text-lg font-medium text-red-500 w-full truncate whitespace-nowrap overflow-hidden"
+        >
+          {title}
+        </p>
+        <p class="text-base truncate whitespace-nowrap overflow-hidden">
+          {description}
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="bg-[#191919] border-[1.2px] border-[#232323] h-auto rounded-sm m-1.5
+    items-center justify-center flex transition-transform duration-300 ease-out group-hover:skew-1 group-hover:scale-100 p-4"
+    >
+      <Icon name="arrow_right_line" class="size-5" />
+    </div>
+  </a>
+</Tooltip>

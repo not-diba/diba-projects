@@ -1,0 +1,19 @@
+---
+import { Icon } from "astro-icon/components";
+const { icon, hoverIcon } = Astro.props;
+---
+
+<ul
+  class="w-full sm:w-full h-fit px-5 py-2.5 rounded-[14px] bg-[#191919] border-[1.2px] border-[#232323] flex items-center justify-center cursor-pointer relative group"
+>
+  <Icon
+    name={icon}
+    class="text-xl transition-opacity duration-200 group-hover:opacity-0"
+  />
+
+  <Icon
+    name={hoverIcon}
+    class="text-xl absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+  />
+</ul>
+

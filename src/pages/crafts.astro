@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import CraftItem from "../components/CraftItem.astro";
+const crafts = await getCollection("crafts");
+---
+
+<Layout>
+  <div
+    class="pt-8 pb-96 md:px-10 flex flex-col md:grid md:grid-cols-3 gap-8 overflow-y-auto scrollbar-hide self-center"
+  >
+    {
+      crafts.map((craft) => (
+        <CraftItem
+          title={craft.data.title}
+          description={craft.data.description}
+          img={craft.data.image.url}
+          video={craft.data.video}
+          url={`/craft/${craft.id}`}
+        />
+      ))
+    }
+  </div>
+</Layout>
