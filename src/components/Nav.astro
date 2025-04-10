@@ -90,10 +90,10 @@ const { goBack } = Astro.props;
             <div class="cursor-pointer" id="navToggle">
               {Astro.url.pathname == "/" && <NavLink label="Home" route="/" />}
               {Astro.url.pathname == "/writing/" && (
-                <NavLink label="Writing" route="/writing" />
+                <NavLink label="Writing" route="/writing/" />
               )}
               {Astro.url.pathname == "/crafts/" && (
-                <NavLink label="Crafts" route="/crafts" />
+                <NavLink label="Crafts" route="/crafts/" />
               )}
             </div>
 
@@ -108,17 +108,18 @@ const { goBack } = Astro.props;
                     <MobileNavItem label="Home" route="/" icon="home_4_line" />
                     <MobileNavItem
                       label="Writing"
-                      route="/writing"
+                      route="/writing/"
                       icon="paper_line"
                     />
                     <MobileNavItem
                       label="Crafts"
-                      route="/crafts"
+                      route="/crafts/"
                       icon="tool_line"
                     />
                   </div>
                   <div class="flex gap-2 w-full">
                     <a
+                      class="w-full sm:w-full"
                       href="https://github.com/not-diba"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -127,15 +128,22 @@ const { goBack } = Astro.props;
                     </a>
 
                     <a
+                      class="w-full sm:w-full"
                       href="https://www.linkedin.com/in/madiba-elvis/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {" "}
                       <NavIcon icon="linkedin_line" hoverIcon="linkedin_fill" />
                     </a>
 
-                    <NavIcon icon="teacup_line" hoverIcon="teacup_fill" />
+                    <a
+                      class="w-full sm:w-full"
+                      href="https://www.linkedin.com/in/madiba-elvis/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <NavIcon icon="teacup_line" hoverIcon="teacup_fill" />
+                    </a>
                   </div>
                   <div class="h-5/6 border-[#232323] border-b" />
                   <div class="flex justify-between bg-[#191919] py-1.5 px-3 border border-[#232323] rounded-md">
