@@ -14,3 +14,5 @@ tags: ["Vim", "Neovim", "blogging", "learning in public"]
 ![Image of Neovim editor on the terminal.](/crafts/neo-vim.png)
 
 ## Coming soon.
+
+Coming soon.

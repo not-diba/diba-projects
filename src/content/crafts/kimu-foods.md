@@ -14,3 +14,5 @@ tags: ["Flutter", "Nextjs", "blogging", "learning in public"]
 ![Kimu foods website](/crafts/kimu-foods.png)
 
 ## Coming soon.
+
+Coming soon.
