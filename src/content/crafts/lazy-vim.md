@@ -1,7 +1,7 @@
 ---
 title: "Neovim"
 pubDate: 2025-08-10
-description: "Using lazy-vim to turn Neovim into a fully functional IDE."
+description: "Neovim as an IDE."
 author: "Elvis Madiba"
 video: "/crafts/neo-vim.mp4"
 image:
@@ -57,9 +57,9 @@ VS Code Flutter plugin
 
 This is similar to how you would add an extension to VS Code from the extension store—except now, you’re doing it with code in Neovim. Neovim has a vast collection of plugins, so I’ll just list a few here, along with a screenshot of the ones I have installed:
 
-- [\*\*tokyo-night](https://github.com/folke/tokyonight.nvim)\*\* – Adds the Tokyo Night theme to Neovim.
-- [\*\*lazy-git](https://github.com/kdheepak/lazygit.nvim) -\*\* Provides a Git CLI interface.
-- [\*\*flutter-tools](https://github.com/nvim-flutter/flutter-tools.nvim)\*\* – Adds Flutter LSP support along with other Flutter-specific tools.
+- [tokyo-night](https://github.com/folke/tokyonight.nvim) – Adds the Tokyo Night theme to Neovim.
+- [lazy-git](https://github.com/kdheepak/lazygit.nvim) -\*\* Provides a Git CLI interface.
+- [flutter-tools](https://github.com/nvim-flutter/flutter-tools.nvim) – Adds Flutter LSP support along with other Flutter-specific tools.
 
 ![My Neovim plugins](/crafts/my-plugins.png)
 
@@ -94,3 +94,5 @@ Neovim’s flexibility means you can start with a minimal configuration and grow
 If you’re curious to get started, pick one preconfigured Neovim setup, spend an afternoon customising it for your workflow, and see how it changes your coding experience.
 
 Before long, you’ll be able to casually drop, _“I use Vim 😅,”_ and feel like a true “Chad.”
+
+[View more](/)
