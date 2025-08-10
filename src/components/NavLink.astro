@@ -3,15 +3,17 @@ const { label, route } = Astro.props;
 const isActive = Astro.url.pathname === route;
 ---
 
-<!-- TODO: page transition animations -->
 <a
-  href={route}
+  href={route === "back" ? "/" : route}
   class={`px-7 py-1 text-center text-xl items-center justify-center transition-colors duration-200
     ${
       isActive
         ? "rounded-[14px] lg:bg-[#191919] lg:border-[1.2px] border-[#232323] text-[#efefe5]"
         : "text-[#a6a6a2] hover:text-[#efefe5]"
     }`}
+  onclick={route === "back"
+    ? `preventDefault(); if (history.length > 1) { history.back(); } else { location.href = '/'; }`
+    : undefined}
 >
   {label}
 </a>
