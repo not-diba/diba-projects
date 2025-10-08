@@ -38,15 +38,12 @@ const { goBack } = Astro.props;
     }
   </section>
   <section class="flex gap-x-2 pl-2 pr-18 items-center">
-    <a
-      href="https://github.com/not-diba"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <Tooltip text="Most of my projects are hosted here" id="github">
-        <NavIcon icon="github_line" hoverIcon="github_fill" />
+    <a href="https://bsky.app/profile/not-diba.bsky.social">
+      <Tooltip text="Bluesky" id="bluesky">
+        <NavIcon icon="bluesky_social_line" hoverIcon="bluesky_social_fill" />
       </Tooltip>
     </a>
+
     <a
       href="https://www.linkedin.com/in/madiba-elvis/"
       target="_blank"
@@ -64,9 +61,15 @@ const { goBack } = Astro.props;
     </a>
 
     <div class="h-5/6 border-[#232323] border-l"></div>
-    <Tooltip text="Buy me a coffee ?" id="coffee">
-      <NavIcon icon="teacup_line" hoverIcon="teacup_fill" />
-    </Tooltip>
+    <a
+      href="https://github.com/not-diba"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Tooltip text="Most of my projects are hosted here" id="github">
+        <NavIcon icon="github_line" hoverIcon="github_fill" />
+      </Tooltip>
+    </a>
   </section>
 </nav>
 
