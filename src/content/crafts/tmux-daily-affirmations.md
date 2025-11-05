@@ -3,7 +3,7 @@ title: "TMUX: Daily Affirmations"
 pubDate: 2025-11-04
 description: "TMUX daily affirmations is a simple TMUX plugin that displays daily affirmations in your TMUX status bar."
 author: "Elvis Madiba"
-video: "/crafts/tmux.mov"
+video: "/crafts/tmux.mp4"
 image:
   url: "/crafts/tmux.png"
   alt: "Image of Neovim editor with TMUX status line."
@@ -14,7 +14,7 @@ tags: ["Vim", "Neovim", "blogging", "TMUX", "learning in public"]
 
 ## What is TMUX ?
 
-TMUX is a terminal multiplexer that allows you to manage multiple terminal sessions within a single window. It enables you to create, access, and control multiple terminal sessions from a single screen, making it easier to multitask and organize your work in the terminal. This is becomes useful when running multiple programs with a single connection, such as when you are connected to a remote server via SSH.
+TMUX is a terminal multiplexer that allows you to manage multiple terminal sessions within a single window. It enables you to create, access, and control multiple terminal sessions from a single screen, making it easier to multitask and organize your work in the terminal. This becomes useful when running multiple programs with a single connection, such as when you are connected to a remote server via SSH.
 
 TMUX's speed and flexibility make it a fantastic tool to manage multiple terminals on your local machine, similar to a window manager. Some great TMUX features include:
 
@@ -51,4 +51,4 @@ The TMUX Daily Affirmations plugin is a simple shell script that fetches a daily
 
 This being my first open source contribution, I found the experience to be both exciting and rewarding. The response and ideas that I got from the [TMUX reddit community](https://www.reddit.com/r/tmux/comments/1ompm92/my_first_tmux_plugin_tmux_daily_affirmations/) were overwhelmingly positive and encouraging. I even got to the top of the TMUX subreddit for a while! With almost 9k views. I also got my first 2 github stars on the project.
 
-I will continue contributing to open source projects and sharing my journey with the community. If you're interested in trying out the TMUX Daily Affirmations plugin, you can find it on [GitHub](https://github.com/not-diba/tmux-daily-affirmations). I will also write a follow up post about how to install and configure TMUX, and how to get it to work with Neovim.
+I will continue contributing to open source projects and sharing my journey with the community. If you're interested in trying out the TMUX Daily Affirmations plugin, you can find it on [my GitHub](https://github.com/not-diba/tmux-daily-affirmations). I will also write a follow up post about how to install and configure TMUX, and how to get it to work with Neovim.
