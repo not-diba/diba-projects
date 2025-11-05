@@ -1,5 +1,5 @@
 ---
-title: "My first open source contribution TMUX: Daily Affirmations"
+title: "TMUX: Daily Affirmations"
 pubDate: 2025-11-04
 description: "TMUX daily affirmations is a simple TMUX plugin that displays daily affirmations in your TMUX status bar."
 author: "Elvis Madiba"
