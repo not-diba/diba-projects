@@ -1,27 +1,39 @@
 ---
-const { title, img, url, video } = Astro.props;
+import { Image } from "astro:assets";
 
+const { title, img, url, video } = Astro.props;
 function convertCraftName(name: String) {
   return "craft/" + name.toLocaleLowerCase().replace(/\s/g, "-");
 }
 ---
 
 <a
-  class="flex flex-col w-full sm:w-[410px] max-h-[320px] border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+  class="flex flex-col w-full sm:w-102.5 min-h-80 border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
   href={url}
 >
-  <div class="relative w-full h-full rounded-md group overflow-hidden">
+  <div
+    class="relative w-full h-full rounded-md group overflow-hidden bg-[#232323]"
+  >
+    <Image
+      src={img}
+      alt={title}
+      width={410}
+      height={230}
+      format="avif"
+      quality={80}
+      loading="lazy"
+      decoding="async"
+      class="absolute inset-0 w-full h-full object-cover rounded-md transition-opacity duration-500 group-hover:opacity-0"
+    />
+
     <video
       class="absolute inset-0 w-full h-full object-cover rounded-md transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-      src={video}
-      autoplay
+      data-src={video}
+      preload="none"
+      playsinline
       loop
-      muted></video>
-
-    <img
-      class="w-full h-full object-cover rounded-md transition duration-500"
-      src={img}
-    />
+      muted
+      disablepictureinpicture></video>
   </div>
 
   <div
@@ -32,3 +44,57 @@ function convertCraftName(name: String) {
     </p>
   </div>
 </a>
+
+<script>
+  // Intersection Observer for lazy video loading
+  const videoCards = document.querySelectorAll("a[href]");
+
+  const videoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target.querySelector(
+          "video[data-src]",
+        ) as HTMLVideoElement;
+        if (!video) return;
+
+        if (entry.isIntersecting && !video.src) {
+          video.src = video.dataset.src!;
+          video.load();
+
+          entry.target.addEventListener(
+            "mouseenter",
+            () => {
+              video.play().catch(() => {
+                // Ignore autoplay errors
+              });
+            },
+            { once: false },
+          );
+
+          entry.target.addEventListener("mouseleave", () => {
+            video.pause();
+            video.currentTime = 0;
+          });
+        }
+      });
+    },
+    {
+      rootMargin: "100px",
+      threshold: 0.1,
+    },
+  );
+
+  videoCards.forEach((card) => {
+    videoObserver.observe(card);
+  });
+</script>
+
+<style>
+  video {
+    will-change: opacity;
+  }
+
+  video {
+    transition: opacity 0.5s ease-in-out;
+  }
+</style>

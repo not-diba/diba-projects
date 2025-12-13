@@ -6,6 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "optimize:images": "node scripts/optimize-images.js",
+    "optimize:videos": "node scripts/optimize-videos.js",
+    "optimize:all": "npm run optimize:images && npm run optimize:videos",
     "astro": "astro"
   },
   "dependencies": {
@@ -13,6 +16,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.5",
     "astro-icon": "^1.1.5",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18",
     "three": "^0.174.0"
   },
