@@ -3,9 +3,9 @@ title: "TMUX: Daily Affirmations"
 pubDate: 2025-11-04
 description: "TMUX daily affirmations is a simple TMUX plugin that displays daily affirmations in your TMUX status bar."
 author: "Elvis Madiba"
-video: "/crafts/tmux.mp4"
+video: "/crafts/tmux.webm"
 image:
-  url: "/crafts/tmux.png"
+  url: "/crafts/tmux.avif"
   alt: "Image of Neovim editor with TMUX status line."
 tags: ["Vim", "Neovim", "blogging", "TMUX", "learning in public"]
 ---
@@ -27,7 +27,7 @@ TMUX's speed and flexibility make it a fantastic tool to manage multiple termina
 
 Hers's an example of my customized TMUX session.
 
-![Example TMUX session](/crafts/tmux.png)
+![Example TMUX session](/crafts/tmux.avif)
 
 For more information on TMUX, check out the [official documentation](https://github.com/tmux/tmux/wiki). As well as the following [Youtube videos](https://www.youtube.com/watch?v=niuOc02Rvrc).
 
@@ -45,7 +45,7 @@ TPM also provides a [guide and example](https://github.com/tmux-plugins/tpm/blob
 
 The TMUX Daily Affirmations plugin is a simple shell script that fetches a daily affirmation from this [API](https://www.freepublicapis.com/affirmation-generator-api) and displays it in the TMUX status bar. The full documentation and source code for the plugin can be found on [GitHub](https://github.com/not-diba/tmux-daily-affirmations).
 
-![TMUX status line](/crafts/status-line.png)
+![TMUX status line](/crafts/status-line.avif)
 
 ### Conclusion
 

@@ -3,16 +3,16 @@ title: "Kimu foods"
 pubDate: 2025-04-11
 description: "Recipe based groceries delivery app"
 author: "Elvis Madiba"
-video: "/crafts/kimu-foods.mov"
+video: "/crafts/kimu-foods.webm"
 image:
-  url: "/crafts/kimu-foods.png"
+  url: "/crafts/kimu-foods.avif"
   alt: "Kimu foods website"
 tags: ["Flutter", "Nextjs", "blogging", "learning in public"]
 ---
 
 # Kimu foods
 
-![Kimu foods website](/crafts/kimu-foods.png)
+![Kimu foods website](/crafts/kimu-foods.avif)
 
 This will be a brief overview of [Kimu Foods](https://main.d1wj048yong21r.amplifyapp.com/), a recipe-based grocery delivery app. I will mostly go over the current architecture as well as my plans for it.
 
@@ -153,7 +153,7 @@ For Ktor and Kotlin, my inexperience again became a challenge, as I wasn’t abl
 
 I decided to work with [Apollo](https://www.apollographql.com/docs/apollo-server) and Node.js for my backend, using a PostgreSQL database with [Prisma](https://www.prisma.io/) as the ORM.
 
-![image.png](/crafts/go-graphql.png)
+![image.png](/crafts/go-graphql.avif)
 
 I chose a code-first approach with Nexus over a schema-first one, as it provided a simpler way to keep my types in sync from Prisma through to my queries and mutations.
 
@@ -165,17 +165,16 @@ The web client is a Next.js app. Currently, it only has a [landing page](https:/
 
 The mobile client is built with Flutter, as I wanted a cross-platform application right out of the box. Here are a couple of screens from the app.
 
-| ![sign_in.png](/crafts/sign_in.png)               | ![sign_up.png](/crafts/sign_up.png)                                 |
-| ------------------------------------------------- | ------------------------------------------------------------------- |
-| ![home_screen.png](/crafts/home_screen.png)       | ![home_screen_scrolled.png](/crafts/home_screen_scrolled.png)       |
-| ![recipe_details.png](/crafts/recipe_details.png) | ![recipe_details_scrolled.png](/crafts/recipe_details_scrolled.png) |
-| ![categories.png](/crafts/categories.png)         | ![categories_scrolled.png](/crafts/categories_scrolled.png)         |
-| ![favourites.png](/crafts/favourites.png)         | ![orders.png](/crafts/orders.png)                                   |
-| ![profile.png](/crafts/profile.png)               | ![profile_scrolled.png](/crafts/profile_scrolled.png)               |
+| ![sign_in.png](/crafts/sign_in.avif)               | ![sign_up.png](/crafts/sign_up.avif)                                 |
+| -------------------------------------------------- | -------------------------------------------------------------------- |
+| ![home_screen.png](/crafts/home_screen.avif)       | ![home_screen_scrolled.png](/crafts/home_screen_scrolled.avif)       |
+| ![recipe_details.png](/crafts/recipe_details.avif) | ![recipe_details_scrolled.png](/crafts/recipe_details_scrolled.avif) |
+| ![categories.png](/crafts/categories.avif)         | ![categories_scrolled.png](/crafts/categories_scrolled.avif)         |
+| ![favourites.png](/crafts/favourites.avif)         | ![orders.png](/crafts/orders.avif)                                   |
+| ![profile.png](/crafts/profile.avif)               | ![profile_scrolled.png](/crafts/profile_scrolled.avif)               |
 
 # Conclusion
 
 This article and application are still works in progress, and I will update the article as I continue development.
 
 [View more](/)
-

@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-
 const { title, img, url, video } = Astro.props;
 function convertCraftName(name: String) {
   return "craft/" + name.toLocaleLowerCase().replace(/\s/g, "-");
@@ -8,11 +7,12 @@ function convertCraftName(name: String) {
 ---
 
 <a
-  class="flex flex-col w-full sm:w-102.5 min-h-80 border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+  class="flex flex-col w-full sm:w-102.5 border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
   href={url}
+  data-video-card
 >
   <div
-    class="relative w-full h-full rounded-md group overflow-hidden bg-[#232323]"
+    class="relative w-full aspect-video rounded-md overflow-hidden bg-[#232323]"
   >
     <Image
       src={img}
@@ -37,7 +37,7 @@ function convertCraftName(name: String) {
   </div>
 
   <div
-    class="flex w-full h-14 items-center p-2 mt-1 bg-[#232323] rounded-md justify-center"
+    class="flex w-full h-10 md:h-12 sm:h-12 items-center p-2 mt-1 bg-[#232323] rounded-md justify-center"
   >
     <p class="group-hover:text-red-500 text-center text-base mx-4">
       {convertCraftName(title)}
@@ -46,55 +46,114 @@ function convertCraftName(name: String) {
 </a>
 
 <script>
-  // Intersection Observer for lazy video loading
-  const videoCards = document.querySelectorAll("a[href]");
+  // Video card lazy loading manager
+  class VideoCardManager {
+    constructor() {
+      this.observer = null;
+      this.init();
+    }
 
-  const videoObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target.querySelector(
-          "video[data-src]",
-        ) as HTMLVideoElement;
-        if (!video) return;
+    init() {
+      // Clean up existing observer
+      if (this.observer) {
+        this.observer.disconnect();
+      }
 
-        if (entry.isIntersecting && !video.src) {
-          video.src = video.dataset.src!;
-          video.load();
+      // Create intersection observer
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target.querySelector(
+              "video[data-src]",
+            ) as HTMLVideoElement;
+            if (!video) return;
 
-          entry.target.addEventListener(
-            "mouseenter",
-            () => {
-              video.play().catch(() => {
-                // Ignore autoplay errors
-              });
-            },
-            { once: false },
-          );
+            // Load video when card is near viewport
+            if (entry.isIntersecting && !video.src) {
+              video.src = video.dataset.src!;
+              video.load();
 
-          entry.target.addEventListener("mouseleave", () => {
-            video.pause();
-            video.currentTime = 0;
+              // Play on hover (works on desktop)
+              const playHandler = () => {
+                video.play().catch(() => {
+                  // Ignore autoplay errors
+                });
+              };
+
+              const pauseHandler = () => {
+                video.pause();
+                video.currentTime = 0;
+              };
+
+              entry.target.addEventListener("mouseenter", playHandler);
+              entry.target.addEventListener("mouseleave", pauseHandler);
+
+              // Store handlers for cleanup
+              (entry.target as any).__videoHandlers = {
+                play: playHandler,
+                pause: pauseHandler,
+              };
+            }
           });
+        },
+        {
+          rootMargin: "100px",
+          threshold: 0.1,
+        },
+      );
+
+      // Observe all video cards
+      const videoCards = document.querySelectorAll("[data-video-card]");
+      videoCards.forEach((card) => {
+        this.observer!.observe(card);
+      });
+    }
+
+    cleanup() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+
+      // Remove event listeners
+      const videoCards = document.querySelectorAll("[data-video-card]");
+      videoCards.forEach((card) => {
+        const handlers = (card as any).__videoHandlers;
+        if (handlers) {
+          card.removeEventListener("mouseenter", handlers.play);
+          card.removeEventListener("mouseleave", handlers.pause);
         }
       });
-    },
-    {
-      rootMargin: "100px",
-      threshold: 0.1,
-    },
-  );
+    }
+  }
 
-  videoCards.forEach((card) => {
-    videoObserver.observe(card);
+  // Initialize manager
+  let videoManager = null;
+
+  function initVideoCards() {
+    if (videoManager) {
+      videoManager.cleanup();
+    }
+    videoManager = new VideoCardManager();
+  }
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", initVideoCards);
+
+  // Re-initialize after View Transitions
+  document.addEventListener("astro:page-load", initVideoCards);
+
+  // Cleanup before page swap
+  document.addEventListener("astro:before-swap", () => {
+    if (videoManager) {
+      videoManager.cleanup();
+    }
   });
 </script>
 
 <style>
+  /* Optimize transitions */
   video {
     will-change: opacity;
-  }
-
-  video {
     transition: opacity 0.5s ease-in-out;
   }
 </style>

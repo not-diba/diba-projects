@@ -3,9 +3,9 @@ title: "Neovim"
 pubDate: 2025-08-10
 description: "Neovim as an IDE."
 author: "Elvis Madiba"
-video: "/crafts/neo-vim.mp4"
+video: "/crafts/neo-vim.webm"
 image:
-  url: "/crafts/neo-vim.png"
+  url: "/crafts/neo-vim.avif"
   alt: "Image of Neovim editor on the terminal."
 tags: ["Vim", "Neovim", "blogging", "learning in public"]
 ---
@@ -47,11 +47,11 @@ LazyVim, along with the other options mentioned above, comes preconfigured with 
 
 For example, I build mobile apps using Flutter, so I like to have Flutter tools such as the ability to view available emulators or run Dart tests. To add such functionality, you simply include the appropriate plugin in your configuration.
 
-![Neovim flutter plugin](/crafts/flutter-plugin.png)
+![Neovim flutter plugin](/crafts/flutter-plugin.avif)
 
 Neovim flutter plugin
 
-![VS Code Flutter plugin](/crafts/vs-code-flutter.png)
+![VS Code Flutter plugin](/crafts/vs-code-flutter.avif)
 
 VS Code Flutter plugin
 
@@ -61,17 +61,17 @@ This is similar to how you would add an extension to VS Code from the extension 
 - [lazy-git](https://github.com/kdheepak/lazygit.nvim) -\*\* Provides a Git CLI interface.
 - [flutter-tools](https://github.com/nvim-flutter/flutter-tools.nvim) – Adds Flutter LSP support along with other Flutter-specific tools.
 
-![My Neovim plugins](/crafts/my-plugins.png)
+![My Neovim plugins](/crafts/my-plugins.avif)
 
 Here are a couple of the plugins in action:
 
 - Lazy-git
 
-![Lazy-git](/crafts/lazy-git.png)
+![Lazy-git](/crafts/lazy-git.avif)
 
 - Typescript LSP
 
-![Typescript LSP](/crafts/ts-lsp.png)
+![Typescript LSP](/crafts/ts-lsp.avif)
 
 ## Language Server Protocol (LSP)
 
@@ -81,9 +81,9 @@ Neovim supports this through a plugin called [`mason`](https://github.com/mason-
 
 If you work with multiple programming languages, managing these configurations manually can become tedious. Fortunately, **LazyVim** includes a convenient CLI for adding and removing LSPs, much like VS Code’s extension system and it even handles updates for you.
 
-![Lazyvim LSP plugins](/crafts/mason.png)
+![Lazyvim LSP plugins](/crafts/mason.avif)
 
-![VS code LSP extension](/crafts/rust-lsp.png)
+![VS code LSP extension](/crafts/rust-lsp.avif)
 
 # Conclusion
 
