@@ -7,7 +7,7 @@ const crafts = await getCollection("crafts");
 
 <Layout>
   <div
-    class="pt-8 pb-96 md:px-10 flex flex-col md:grid md:grid-cols-3 gap-8 overflow-y-auto scrollbar-hide self-center"
+    class="pt-8 pb-96 md:px-10 flex flex-col md:grid md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-40 overflow-y-auto scrollbar-hide w-full max-w-7xl mx-auto"
   >
     {
       crafts.map((craft) => (

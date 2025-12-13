@@ -1,36 +1,69 @@
 ---
+import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-
-const { title, description, img, url, author, pubDate } = Astro.props;
+const {
+  title,
+  description,
+  img,
+  url,
+  author,
+  pubDate,
+  priority = false,
+} = Astro.props;
 ---
 
-<a href={url}>
-  <div
-    class="flex flex-col w-72 h-[400px] border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+<a href={url} class="block">
+  <article
+    class="flex flex-col w-72 h-100 border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
   >
-   <!-- maybe have some cool effect on hover -->
-    <img
-      class="w-full h-1/2 min-h-1/2 object-cover rounded-md"
-      src={img}
-    />
+    <div
+      class="relative w-full h-1/2 min-h-1/2 rounded-md overflow-hidden bg-[#232323]"
+    >
+      <Image
+        src={img}
+        alt={title}
+        width={288}
+        height={200}
+        format="avif"
+        quality={80}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        class="w-full h-full object-cover rounded-md transition-transform duration-300 group-hover:scale-110"
+      />
+
+      <div
+        class="absolute inset-0 bg-linear-to-r from-[#232323] via-[#2a2a2a] to-[#232323] animate-pulse -z-10"
+      >
+      </div>
+    </div>
+
     <section class="px-2 flex flex-col justify-between h-full">
       <div>
-        <h1 class="text-xl font-semibold text-red-500 pt-2 line-clamp-3">
+        <h2 class="text-xl font-semibold text-red-500 pt-2 line-clamp-3">
           {title}
-        </h1>
+        </h2>
         <p class="text-sm line-clamp-2 overflow-ellipsis pt-2">{description}</p>
       </div>
-      <div
+
+      <footer
         class="w-full flex justify-between py-2 items-center border-t border-[#232323]"
       >
-        <div class="flex gap-1">
+        <div class="flex gap-1 items-center">
           <img
             class="size-8 rounded-full border border-[#232323]"
             src="/favicon.svg"
+            alt={`${author} avatar`}
+            loading="lazy"
+            decoding="async"
+            width="32"
+            height="32"
           />
           <div class="flex flex-col">
             <p class="text-xs font-extrabold">{author}</p>
-            <p class="text-xs font-extralight">
+            <time
+              class="text-xs font-extralight"
+              datetime={pubDate.toISOString()}
+            >
               {
                 pubDate.toLocaleDateString("en-us", {
                   year: "numeric",
@@ -39,11 +72,35 @@ const { title, description, img, url, author, pubDate } = Astro.props;
                   weekday: "short",
                 })
               }
-            </p>
+            </time>
           </div>
         </div>
-        <Icon name="right_line" class="size-5" />
-      </div>
+        <Icon name="right_line" class="size-5" aria-hidden="true" />
+      </footer>
     </section>
-  </div>
+  </article>
 </a>
+
+<style>
+  article {
+    will-change: transform;
+  }
+
+  img {
+    will-change: transform;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+</style>
