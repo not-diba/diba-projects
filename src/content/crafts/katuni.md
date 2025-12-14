@@ -1,47 +1,47 @@
 ---
-title: "Katuni comic reader app (WIP)"
-pubDate: 2025-12-14
-description: "Building a comic reader I would like to use"
+title: "Katuni Comic Reader App (WIP)"
+pubDate: 2025-14-12
+description: "Building a comic reader app I would actually want to use"
 author: "Elvis Madiba"
 video: "/crafts/library_screen.webm"
 image:
   url: "/crafts/library_screen.webp"
-  alt: "Image of the main library screen of the Katuni comic reader app."
-tags: ["Comics", "Jetpack compose", "blogging", "Kotlin", "learning in public"]
+  alt: "Main library screen of the Katuni comic reader app"
+tags: ["Comics", "Jetpack Compose", "Kotlin", "Android", "Learning in Public"]
 ---
 
-# Katuni reader app (_Work in progress_)
+# Katuni Comic Reader App (_Work in Progress_)
 
-## Hello 👋
+![Katuni comic reader](/crafts/library_screen.webp)
 
-I am building a **comic book reader app** in Kotlin Jetpack compose .
+I am building a **comic book reader app** using **Kotlin and Jetpack Compose**.
 
-My motivation for this came after switching devices from **iOS to Android**. I was not able to find an adequate comic book reader app — or rather, a comic book reader app that _I_ wanted to use.
+My motivation came after switching devices from **iOS to Android**. I couldn’t find a comic book reader app that felt right — or rather, one that _I_ personally wanted to use.
 
 ---
 
 ## Features I Want in the App
 
-- Ability to read most formats (**CBZ, PDF, EPUB**, etc.)
-- A **clean UI** where my comics feel like they’re part of a digital collection
-- Ability to read comics from a folder on my phone’s **local storage**
-- Since I have comics in **PDF format**, I’d like to support **PDF annotations**, such as highlighting while reading
+- Support for most comic formats (**CBZ, PDF, EPUB**, etc.)
+- A **clean UI** where comics feel like part of a curated digital collection
+- Ability to read comics directly from a folder on the phone’s **local storage**
+- **PDF annotations**, since I like to highlight content as I read
 
 ---
 
 ## Progress So Far
 
 - Loading comics from local storage
-- Searching through your library
+- Searching through the library
 - Reading comics _(some optimization still needed)_
 
 ---
 
 ## Work in Progress
 
-- Thumbnail progress as you read through a comic
+- Thumbnail-based reading progress
 - Improved UI and animations
-- Additional screens, such as:
+- Additional screens, including:
   - **Reading Now**
   - **Highlights**
   - **Settings / Profile**
@@ -50,13 +50,21 @@ My motivation for this came after switching devices from **iOS to Android**. I w
 
 ## Media
 
-Here are a couple of screens and videos of my work on the app so far:
+Below are screenshots and videos showcasing the current state of the app.
 
-[library screen](/crafts/library_screen.webp)
-[Comic reader screen](/crafts/details_screen.webp)
+# Screens & Videos
 
-[Library Screen Video](/crafts/library_view.webm)
-[Reading Screen Video](/crafts/read_comics.webm)
-[Search and other screens](/crafts/search_and_other_screens.webm)
+<h3>Library Screen</h3>
+<img src="/crafts/library_screen.webp" alt="Library screen" />
 
----
+<h3>Comic Reader Screen</h3>
+<img src="/crafts/details_screen.webp" alt="Comic reader screen" />
+
+<h3>Library Screen Video</h3>
+<video src="/crafts/library_view.webm" controls></video>
+
+<h3>Reading Screen Video</h3>
+<video src="/crafts/read_comics.webm" controls></video>
+
+<h3>Search & Other Screens</h3>
+<video src="/crafts/search_and_other_screens.webm" controls></video>
