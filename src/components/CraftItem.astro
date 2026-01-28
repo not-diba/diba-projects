@@ -7,13 +7,11 @@ function convertCraftName(name: String) {
 ---
 
 <a
-  class="flex flex-col w-full sm:w-102.5 border-[#232323] border bg-[#0a090f] rounded-t-lg rounded-b-3xl p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+  class="craft-item flex flex-col w-full sm:w-102.5 glass-card rounded-xl p-1.5 cursor-pointer transition-all duration-400 ease-out hover-glow card-shine group"
   href={url}
   data-video-card
 >
-  <div
-    class="relative w-full aspect-video rounded-md overflow-hidden bg-[#232323]"
-  >
+  <div class="relative w-full aspect-video rounded-lg overflow-hidden">
     <Image
       src={img}
       alt={title}
@@ -23,23 +21,48 @@ function convertCraftName(name: String) {
       quality={80}
       loading="lazy"
       decoding="async"
-      class="absolute inset-0 w-full h-full object-cover rounded-md transition-opacity duration-500 group-hover:opacity-0"
+      class="absolute inset-0 w-full h-full object-cover rounded-lg transition-all duration-500 group-hover:opacity-0 group-hover:scale-105"
     />
 
     <video
-      class="absolute inset-0 w-full h-full object-cover rounded-md transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+      class="absolute inset-0 w-full h-full object-cover rounded-lg transition-all duration-500 opacity-0 scale-105 group-hover:opacity-100 group-hover:scale-100"
       data-src={video}
       preload="none"
       playsinline
       loop
       muted
       disablepictureinpicture></video>
+
+    <!-- Play indicator -->
+    <div
+      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+    >
+      <div
+        class="play-indicator w-14 h-14 rounded-full glass flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-400"
+      >
+        <svg
+          class="w-6 h-6 text-white ml-1"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M8 5.14v14l11-7-11-7z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Gradient overlay -->
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-[#0a090f]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-lg"
+    >
+    </div>
   </div>
 
   <div
-    class="flex w-full h-10 md:h-12 sm:h-12 items-center p-2 mt-1 bg-[#232323] rounded-full justify-center"
+    class="craft-label flex w-full h-10 md:h-12 sm:h-12 items-center p-2 mt-1.5 glass rounded-full justify-center transition-all duration-400"
   >
-    <p class="group-hover:text-red-500 text-center text-base mx-4">
+    <p
+      class="text-[#efefe5]/80 group-hover:text-red-400 text-center text-base mx-4 transition-colors duration-300"
+    >
       {convertCraftName(title)}
     </p>
   </div>
@@ -151,9 +174,37 @@ function convertCraftName(name: String) {
 </script>
 
 <style>
-  /* Optimize transitions */
+  .craft-item {
+    will-change: transform, box-shadow;
+    transform: translateY(0) scale(1);
+  }
+
+  .craft-item:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  .craft-item:active {
+    transform: translateY(-4px) scale(1.01);
+  }
+
   video {
-    will-change: opacity;
-    transition: opacity 0.5s ease-in-out;
+    will-change: opacity, transform;
+  }
+
+  .craft-label {
+    will-change: background-color;
+  }
+
+  .craft-item:hover .craft-label {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .play-indicator {
+    will-change: transform, opacity;
+  }
+
+  .duration-400 {
+    transition-duration: 400ms;
   }
 </style>

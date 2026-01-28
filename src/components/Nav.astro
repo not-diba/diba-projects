@@ -12,80 +12,151 @@ const currentPath = Astro.url.pathname;
 <!-- Desktop Navigation -->
 <nav
   id="default-nav"
-  class="hidden lg:flex fixed bottom-0 w-fit h-fit border-[1.2px] border-[#232323] rounded-[22px] z-1000 self-center mb-8 p-[3px] bg-[#0a090f]"
+  class="hidden lg:flex fixed bottom-0 w-fit h-fit z-1000 self-center mb-8 gap-2 items-center nav-seesaw"
   role="navigation"
   aria-label="Main navigation"
 >
-  <section
-    class="flex gap-x-1 border-[1.2px] border-[#232323] rounded-[18px] p-0.75 items-center w-fit"
-  >
-    {
-      goBack ? (
+  {
+    goBack ? (
+      <div class="glass-nav rounded-full p-1.5">
         <Tooltip text="Go back" id="back">
           <NavLink label="Back" route="back" />
         </Tooltip>
-      ) : (
-        <>
-          <Tooltip text="Kejani 🏠" id="home">
-            <NavLink label="Home" route="/" />
-          </Tooltip>
-          <Tooltip text="My articles 📚" id="writing">
-            <NavLink label="Writing" route="/writing/" />
-          </Tooltip>
-          <Tooltip text="My projects 💻" id="crafts">
-            <NavLink label="Crafts" route="/crafts/" />
-          </Tooltip>
-        </>
-      )
-    }
-  </section>
-  
-  <section class="flex gap-x-2 pl-2 pr-18 items-center">
-    <a 
-      href="https://bsky.app/profile/not-diba.bsky.social"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Visit my Bluesky profile"
-    >
-      <Tooltip text="Bluesky" id="bluesky">
-        <NavIcon icon="bluesky_social_line" hoverIcon="bluesky_social_fill" />
-      </Tooltip>
-    </a>
+      </div>
+    ) : (
+      <>
+        {/* Items before active */}
+        {currentPath !== "/" && (
+          <div class="glass-nav rounded-full p-2 flex gap-x-1 items-center">
+            <Tooltip text="Kejani 🏠" id="home">
+              <NavLink label="Home" route="/" />
+            </Tooltip>
+            {currentPath === "/crafts/" && (
+              <Tooltip text="My articles 📚" id="writing">
+                <NavLink label="Writing" route="/writing/" />
+              </Tooltip>
+            )}
+          </div>
+        )}
 
-    <a
-      href="https://www.linkedin.com/in/madiba-elvis/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Visit my LinkedIn profile"
-    >
-      <Tooltip text="I sometimes post my articles here as well" id="linkedIn">
-        <NavIcon icon="linkedin_line" hoverIcon="linkedin_fill" />
-      </Tooltip>
-    </a>
+        {/* Active item - floating bubble */}
+        <div class="active-nav-bubble">
+          {currentPath === "/" && (
+            <Tooltip text="Kejani 🏠" id="home">
+              <NavLink label="Home" route="/" />
+            </Tooltip>
+          )}
+          {currentPath === "/writing/" && (
+            <Tooltip text="My articles 📚" id="writing">
+              <NavLink label="Writing" route="/writing/" />
+            </Tooltip>
+          )}
+          {currentPath === "/crafts/" && (
+            <Tooltip text="My projects 💻" id="crafts">
+              <NavLink label="Crafts" route="/crafts/" />
+            </Tooltip>
+          )}
+        </div>
 
-    <a 
-      href="mailto:madibaelvis@gmail.com"
-      aria-label="Send me an email"
-    >
-      <Tooltip text="Send me an email" id="mail">
-        <NavIcon icon="mail_line" hoverIcon="mail_fill" />
-      </Tooltip>
-    </a>
+        {/* Items after active + social links */}
+        <div class="glass-nav rounded-full p-2 flex gap-x-2 items-center">
+          {currentPath === "/" && (
+            <>
+              <Tooltip text="My articles 📚" id="writing">
+                <NavLink label="Writing" route="/writing/" />
+              </Tooltip>
+              <Tooltip text="My projects 💻" id="crafts">
+                <NavLink label="Crafts" route="/crafts/" />
+              </Tooltip>
+            </>
+          )}
+          {currentPath === "/writing/" && (
+            <Tooltip text="My projects 💻" id="crafts">
+              <NavLink label="Crafts" route="/crafts/" />
+            </Tooltip>
+          )}
 
-    <div class="h-5/6 border-[#232323] border-l" aria-hidden="true"></div>
-    
-    <a
-      href="https://github.com/not-diba"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Visit my GitHub profile"
-    >
-      <Tooltip text="Most of my projects are hosted here" id="github">
-        <NavIcon icon="github_line" hoverIcon="github_fill" />
-      </Tooltip>
-    </a>
-  </section>
+          <div class="h-6 w-px bg-white/10 mx-2" aria-hidden="true" />
+
+          <a
+            href="https://bsky.app/profile/not-diba.bsky.social"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit my Bluesky profile"
+          >
+            <Tooltip text="Bluesky" id="bluesky">
+              <NavIcon icon="bluesky_social_line" hoverIcon="bluesky_social_fill" />
+            </Tooltip>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/madiba-elvis/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit my LinkedIn profile"
+          >
+            <Tooltip text="I sometimes post my articles here as well" id="linkedIn">
+              <NavIcon icon="linkedin_line" hoverIcon="linkedin_fill" />
+            </Tooltip>
+          </a>
+
+          <a
+            href="mailto:madibaelvis@gmail.com"
+            aria-label="Send me an email"
+          >
+            <Tooltip text="Send me an email" id="mail">
+              <NavIcon icon="mail_line" hoverIcon="mail_fill" />
+            </Tooltip>
+          </a>
+
+          <div class="h-6 w-px bg-white/10" aria-hidden="true" />
+
+          <a
+            href="https://github.com/not-diba"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit my GitHub profile"
+          >
+            <Tooltip text="Most of my projects are hosted here" id="github">
+              <NavIcon icon="github_line" hoverIcon="github_fill" />
+            </Tooltip>
+          </a>
+        </div>
+      </>
+    )
+  }
 </nav>
+
+<style>
+  .active-nav-bubble {
+    background: linear-gradient(
+      135deg,
+      rgba(239, 68, 68, 0.15) 0%,
+      rgba(239, 68, 68, 0.08) 50%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 50px;
+    padding: 0.375rem 0.375rem;
+    box-shadow:
+      0 0 0 1px rgba(239, 68, 68, 0.25),
+      0 4px 24px rgba(239, 68, 68, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  .active-nav-bubble:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px rgba(239, 68, 68, 0.35),
+      0 6px 28px rgba(239, 68, 68, 0.2),
+      0 12px 40px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+</style>
 
 <!-- Mobile Navigation -->
 <div
@@ -107,7 +178,7 @@ const currentPath = Astro.url.pathname;
           </button>
         ) : (
           <>
-            <button 
+            <button
               id="navToggle"
               class="cursor-pointer"
               aria-label="Open navigation menu"
@@ -129,14 +200,14 @@ const currentPath = Astro.url.pathname;
             >
               <div class="p-4">
                 <!-- Drag handle -->
-                <div 
-                  class="w-12 h-1 mx-auto mb-4 rounded-full bg-[#232323]" 
+                <div
+                  class="w-12 h-1 mx-auto mb-4 rounded-full bg-[#232323]"
                   aria-hidden="true"
                 />
-                
+
                 <div class="flex flex-col gap-4">
                   <!-- Main Navigation Links -->
-                  <nav 
+                  <nav
                     class="border-[1.2px] border-[#232323] rounded-xl p-2 flex flex-col gap-4"
                     aria-label="Main pages"
                   >
@@ -144,7 +215,7 @@ const currentPath = Astro.url.pathname;
                     <MobileNavItem label="Writing" route="/writing/" icon="paper_line" />
                     <MobileNavItem label="Crafts" route="/crafts/" icon="tool_line" />
                   </nav>
-                  
+
                   <!-- Social Links -->
                   <div class="flex gap-2 w-full" role="group" aria-label="Social media links">
                     <a
@@ -177,11 +248,11 @@ const currentPath = Astro.url.pathname;
                       <NavIcon icon="bluesky_social_line" hoverIcon="bluesky_social_fill" />
                     </a>
                   </div>
-                  
+
                   <div class="h-5/6 border-[#232323] border-b" aria-hidden="true" />
-                  
+
                   <!-- Email Contact -->
-                  <a 
+                  <a
                     href="mailto:madibaelvis@gmail.com"
                     class="flex justify-between bg-[#191919] py-1.5 px-3 border border-[#232323] rounded-md hover:bg-[#232323] transition-colors"
                     aria-label="Send email to madibaelvis@gmail.com"
@@ -224,12 +295,12 @@ const currentPath = Astro.url.pathname;
       this.isDragging = false;
       this.startY = 0;
       this.currentY = 0;
-      
+
       if (this.navToggle && this.bottomSheet && this.overlay) {
         this.init();
       }
     }
-    
+
     init() {
       // Bind methods to maintain context
       this.openBottomSheet = this.openBottomSheet.bind(this);
@@ -238,99 +309,99 @@ const currentPath = Astro.url.pathname;
       this.handleTouchStart = this.handleTouchStart.bind(this);
       this.handleTouchMove = this.handleTouchMove.bind(this);
       this.handleTouchEnd = this.handleTouchEnd.bind(this);
-      
+
       // Add event listeners
       this.navToggle.addEventListener("click", this.openBottomSheet);
       this.overlay.addEventListener("click", this.closeBottomSheet);
       document.addEventListener("keydown", this.handleEscape);
-      
+
       // Touch events for swipe to close
       this.bottomSheet.addEventListener("touchstart", this.handleTouchStart, { passive: true });
       this.bottomSheet.addEventListener("touchmove", this.handleTouchMove, { passive: false });
       this.bottomSheet.addEventListener("touchend", this.handleTouchEnd, { passive: true });
     }
-    
+
     openBottomSheet(e) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       if (!this.isOpen) {
         this.bottomSheet.classList.remove("translate-y-full");
         this.overlay.classList.remove("opacity-0", "pointer-events-none");
         this.overlay.classList.add("opacity-50");
         this.navToggle.setAttribute("aria-expanded", "true");
         this.isOpen = true;
-        
+
         // Focus management
         this.bottomSheet.focus();
-        
+
         // Prevent body scroll
         document.body.style.overflow = "hidden";
       }
     }
-    
+
     closeBottomSheet(e = null) {
       if (e && e.type === "click" && e.target !== this.overlay) {
         return;
       }
-      
+
       if (this.isOpen) {
         this.bottomSheet.classList.add("translate-y-full");
         this.overlay.classList.add("opacity-0", "pointer-events-none");
         this.overlay.classList.remove("opacity-50");
         this.navToggle.setAttribute("aria-expanded", "false");
         this.isOpen = false;
-        
+
         // Restore body scroll
         document.body.style.overflow = "";
-        
+
         // Return focus to toggle button
         this.navToggle.focus();
       }
     }
-    
+
     handleEscape(e) {
       if (e.key === "Escape" && this.isOpen) {
         this.closeBottomSheet();
       }
     }
-    
+
     handleTouchStart(e) {
       // Don't start dragging if touching a link or button
       if (e.target.tagName === "A" || e.target.tagName === "BUTTON" || e.target.closest("a, button")) {
         return;
       }
-      
+
       this.startY = e.touches[0].clientY;
       this.isDragging = true;
     }
-    
+
     handleTouchMove(e) {
       if (!this.isDragging) return;
-      
+
       this.currentY = e.touches[0].clientY;
       const deltaY = this.currentY - this.startY;
-      
+
       // Only allow dragging down
       if (deltaY > 0) {
         e.preventDefault();
         this.bottomSheet.style.transform = `translateY(${deltaY}px)`;
       }
     }
-    
+
     handleTouchEnd() {
       if (!this.isDragging) return;
-      
+
       this.bottomSheet.style.transform = "";
-      
+
       // Close if dragged down more than 80px
       if (this.currentY - this.startY > 80) {
         this.closeBottomSheet();
       }
-      
+
       this.isDragging = false;
     }
-    
+
     cleanup() {
       // Remove all event listeners
       this.navToggle?.removeEventListener("click", this.openBottomSheet);
@@ -339,31 +410,31 @@ const currentPath = Astro.url.pathname;
       this.bottomSheet?.removeEventListener("touchstart", this.handleTouchStart);
       this.bottomSheet?.removeEventListener("touchmove", this.handleTouchMove);
       this.bottomSheet?.removeEventListener("touchend", this.handleTouchEnd);
-      
+
       // Restore body scroll
       document.body.style.overflow = "";
     }
   }
-  
+
   // Initialize navigation manager
   let navManager = null;
-  
+
   function initNavigation() {
     // Cleanup existing instance
     if (navManager) {
       navManager.cleanup();
     }
-    
+
     // Create new instance
     navManager = new NavigationManager();
   }
-  
+
   // Initialize on first page load
   document.addEventListener("DOMContentLoaded", initNavigation);
-  
+
   // Re-initialize after Astro page transitions
   document.addEventListener("astro:page-load", initNavigation);
-  
+
   // Cleanup before page swap
   document.addEventListener("astro:before-swap", () => {
     if (navManager) {
@@ -376,11 +447,11 @@ const currentPath = Astro.url.pathname;
   #bottomSheet {
     will-change: transform;
   }
-  
+
   #overlay {
     will-change: opacity;
   }
-  
+
   body.sheet-open {
     overflow: hidden;
   }

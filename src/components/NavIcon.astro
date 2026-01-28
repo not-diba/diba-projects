@@ -4,16 +4,30 @@ const { icon, hoverIcon } = Astro.props;
 ---
 
 <ul
-  class="w-full sm:w-full h-fit px-5 py-2.5 rounded-[14px] bg-[#191919] border-[1.2px] border-[#232323] flex items-center justify-center cursor-pointer relative group"
+  class="nav-icon w-full sm:w-full h-fit px-5 py-2.5 rounded-xl glass flex items-center justify-center cursor-pointer relative group transition-all duration-300"
 >
   <Icon
     name={icon}
-    class="text-xl transition-opacity duration-200 group-hover:opacity-0"
+    class="text-xl transition-all duration-300 group-hover:opacity-0 group-hover:scale-75"
   />
 
   <Icon
     name={hoverIcon}
-    class="text-xl absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+    class="text-xl absolute opacity-0 scale-125 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 text-red-400"
   />
 </ul>
 
+<style>
+  .nav-icon {
+    will-change: transform, background-color;
+  }
+
+  .nav-icon:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .nav-icon:active {
+    transform: scale(0.95);
+  }
+</style>

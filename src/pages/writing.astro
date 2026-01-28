@@ -4,6 +4,10 @@ import ArticleCard from "../components/ArticleCard.astro";
 import Layout from "../layouts/Layout.astro";
 
 const articles = await getCollection("writing");
+const sortedArticles = [...articles].sort(
+  (a, b) =>
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
+);
 ---
 
 <Layout>
@@ -11,15 +15,21 @@ const articles = await getCollection("writing");
     class="pt-8 pb-96 px-10 flex flex-col md:grid md:grid-cols-3 gap-8 overflow-y-auto scrollbar-hide self-center"
   >
     {
-      articles.map((article: any) => (
-        <ArticleCard
-          url={`/writing/${article.id}`}
-          title={article.data.title}
-          description={article.data.description}
-          img={article.data.image.url}
-          author={article.data.author}
-          pubDate={article.data.pubDate}
-        />
+      sortedArticles.map((article: any, index: number) => (
+        <div
+          class="reveal reveal-stagger"
+          style={`animation-delay: ${index * 80}ms`}
+        >
+          <ArticleCard
+            url={`/writing/${article.id}`}
+            title={article.data.title}
+            description={article.data.description}
+            img={article.data.image.url}
+            author={article.data.author}
+            pubDate={article.data.pubDate}
+            priority={index < 3}
+          />
+        </div>
       ))
     }
   </div>

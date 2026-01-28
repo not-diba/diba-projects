@@ -15,11 +15,15 @@ import "../styles/global.css";
     <title>not-diba</title>
   </head>
   <body
-    class="flex flex-col h-fit md:h-screen lg:h-screen w-full px-4 sm:px-8 md:px-18 lg:px-18 pt-8 bg-[#0a090f] font-sans text-[#efefe5] text-xl md:overscroll-none md:overflow-hidden bg-[url('/bg.svg')] bg-cover bg-center bg-no-repeat"
+    class="flex flex-col h-fit md:h-screen lg:h-screen w-full px-4 sm:px-8 md:px-18 lg:px-18 pt-8 bg-[#0a090f] font-sans text-[#efefe5] text-xl md:overscroll-none md:overflow-hidden bg-[url('/bg.svg')] bg-cover bg-center bg-no-repeat noise-overlay"
   >
-    <div class="flex justify-between items-center">
+    <!-- Ambient floating orbs for visual depth -->
+    <div class="ambient-orb ambient-orb-1" aria-hidden="true"></div>
+    <div class="ambient-orb ambient-orb-2" aria-hidden="true"></div>
+
+    <header class="flex justify-between items-center reveal reveal-stagger">
       <div class="flex items-center gap-14">
-        <a href="/">
+        <a href="/" class="spring-hover">
           <img
             src="/diba-projects.svg"
             alt="Diba Projects"
@@ -47,47 +51,169 @@ import "../styles/global.css";
         </div>
       </div>
       <div class="flex gap-3 items-center text-sm">
-        <div class="size-1.5 bg-red-500 rounded-full"></div>
+        <div class="size-2 bg-red-500 rounded-full pulse-glow"></div>
         <Tooltip
           text="Mobile apps, websites, games, server architecture, IoT."
           id="work"
         >
-          <ScrambleText text="AVAILABLE FOR WORK" />
+          <span class="animated-underline">
+            <ScrambleText text="AVAILABLE FOR WORK" />
+          </span>
         </Tooltip>
       </div>
-    </div>
+    </header>
     <slot />
     <Nav />
   </body>
 </html>
 
-<style is:global>
-  /* View Transitions customization */
+<script>
+  // Scroll reveal animation observer
+  class ScrollReveal {
+    constructor() {
+      this.observer = null;
+      this.init();
+    }
 
-  /* Fade transition for page changes */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.3s;
-  }
+    init() {
+      // Cleanup existing observer
+      if (this.observer) {
+        this.observer.disconnect();
+      }
 
-  /* Smooth fade */
-  ::view-transition-old(root) {
-    animation-name: fade-out;
-  }
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              // Unobserve after animation to save resources
+              this.observer?.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        },
+      );
 
-  ::view-transition-new(root) {
-    animation-name: fade-in;
-  }
+      // Observe all elements with reveal classes
+      const revealElements = document.querySelectorAll(
+        ".reveal, .reveal-scale, .reveal-left, .reveal-right",
+      );
+      revealElements.forEach((el) => {
+        this.observer?.observe(el);
+      });
+    }
 
-  @keyframes fade-out {
-    to {
-      opacity: 0;
+    cleanup() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
     }
   }
 
-  @keyframes fade-in {
-    from {
+  // Magnetic effect for buttons/links
+  class MagneticEffect {
+    constructor() {
+      this.elements = [];
+      this.init();
+    }
+
+    init() {
+      const magneticElements = document.querySelectorAll(".magnetic");
+
+      magneticElements.forEach((el) => {
+        const handleMouseMove = (e: MouseEvent) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+
+          (el as HTMLElement).style.transform =
+            `translate(${x * 0.2}px, ${y * 0.2}px)`;
+        };
+
+        const handleMouseLeave = () => {
+          (el as HTMLElement).style.transform = "translate(0, 0)";
+        };
+
+        el.addEventListener("mousemove", handleMouseMove);
+        el.addEventListener("mouseleave", handleMouseLeave);
+
+        this.elements.push({ el, handleMouseMove, handleMouseLeave });
+      });
+    }
+
+    cleanup() {
+      this.elements.forEach(({ el, handleMouseMove, handleMouseLeave }) => {
+        el.removeEventListener("mousemove", handleMouseMove);
+        el.removeEventListener("mouseleave", handleMouseLeave);
+      });
+      this.elements = [];
+    }
+  }
+
+  // Initialize effects
+  let scrollReveal: ScrollReveal | null = null;
+  let magneticEffect: MagneticEffect | null = null;
+
+  function initEffects() {
+    if (scrollReveal) scrollReveal.cleanup();
+    if (magneticEffect) magneticEffect.cleanup();
+
+    scrollReveal = new ScrollReveal();
+    magneticEffect = new MagneticEffect();
+  }
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", initEffects);
+  document.addEventListener("astro:page-load", initEffects);
+
+  // Cleanup before page swap
+  document.addEventListener("astro:before-swap", () => {
+    if (scrollReveal) scrollReveal.cleanup();
+    if (magneticEffect) magneticEffect.cleanup();
+  });
+</script>
+
+<style is:global>
+  /* View Transitions customization */
+
+  /* Smooth morph transition for page changes */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.4s;
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Crossfade with scale */
+  ::view-transition-old(root) {
+    animation-name: page-fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: page-fade-in;
+  }
+
+  @keyframes page-fade-out {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
       opacity: 0;
+      transform: scale(0.98);
+    }
+  }
+
+  @keyframes page-fade-in {
+    0% {
+      opacity: 0;
+      transform: scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 

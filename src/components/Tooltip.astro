@@ -10,14 +10,22 @@ const tooltipId = id || "tooltip";
 
   <div
     id={`${tooltipId}`}
-    class="fixed bg-[#efefe5] text-[#0a090f] text-xs font-medium px-2 py-1 rounded-sm
-    opacity-0 pointer-events-none transition-opacity duration-200 z-10000"
+    class="tooltip fixed glass text-[#efefe5] text-xs font-medium px-3 py-1.5 rounded-lg
+    opacity-0 pointer-events-none z-10000 shadow-lg"
   >
-    {text}
+    <span class="relative z-10">{text}</span>
   </div>
+</div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
+<script>
+  // Tooltip manager with improved animation
+  class TooltipManager {
+    constructor() {
+      this.tooltips = new Map();
+      this.init();
+    }
+
+    init() {
       const wrappers = document.querySelectorAll("[data-tooltip-id]");
 
       wrappers.forEach((wrapper) => {
@@ -25,24 +33,97 @@ const tooltipId = id || "tooltip";
         const tooltip = document.getElementById(tooltipId!);
         if (!tooltip) return;
 
-        function handleMouseEnter() {
+        const handleMouseEnter = () => {
           document.addEventListener("mousemove", updateTooltip);
-          tooltip!.style.opacity = "1";
-        }
+          tooltip.style.opacity = "1";
+          tooltip.style.transform = "translateY(0) scale(1)";
+        };
 
-        function handleMouseLeave() {
+        const handleMouseLeave = () => {
           document.removeEventListener("mousemove", updateTooltip);
-          tooltip!.style.opacity = "0";
-        }
+          tooltip.style.opacity = "0";
+          tooltip.style.transform = "translateY(4px) scale(0.95)";
+        };
 
-        function updateTooltip(event: { pageX: number; pageY: number }) {
-          tooltip!.style.left = event.pageX + 10 + "px";
-          tooltip!.style.top = event.pageY + 15 + "px";
-        }
+        const updateTooltip = (event: MouseEvent) => {
+          const x = event.clientX;
+          const y = event.clientY;
+
+          // Keep tooltip within viewport
+          const tooltipRect = tooltip.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+
+          let left = x + 12;
+          let top = y + 16;
+
+          // Adjust if tooltip would go off right edge
+          if (left + tooltipRect.width > viewportWidth - 10) {
+            left = x - tooltipRect.width - 12;
+          }
+
+          // Adjust if tooltip would go off bottom edge
+          if (top + tooltipRect.height > viewportHeight - 10) {
+            top = y - tooltipRect.height - 16;
+          }
+
+          tooltip.style.left = left + "px";
+          tooltip.style.top = top + "px";
+        };
 
         wrapper.addEventListener("mouseenter", handleMouseEnter);
         wrapper.addEventListener("mouseleave", handleMouseLeave);
+
+        this.tooltips.set(tooltipId, {
+          wrapper,
+          tooltip,
+          handleMouseEnter,
+          handleMouseLeave,
+          updateTooltip,
+        });
       });
-    });
-  </script>
-</div>
+    }
+
+    cleanup() {
+      this.tooltips.forEach(
+        ({ wrapper, handleMouseEnter, handleMouseLeave, updateTooltip }) => {
+          wrapper.removeEventListener("mouseenter", handleMouseEnter);
+          wrapper.removeEventListener("mouseleave", handleMouseLeave);
+          document.removeEventListener("mousemove", updateTooltip);
+        },
+      );
+      this.tooltips.clear();
+    }
+  }
+
+  let tooltipManager: TooltipManager | null = null;
+
+  function initTooltips() {
+    if (tooltipManager) {
+      tooltipManager.cleanup();
+    }
+    tooltipManager = new TooltipManager();
+  }
+
+  document.addEventListener("DOMContentLoaded", initTooltips);
+  document.addEventListener("astro:page-load", initTooltips);
+  document.addEventListener("astro:before-swap", () => {
+    if (tooltipManager) {
+      tooltipManager.cleanup();
+    }
+  });
+</script>
+
+<style>
+  .tooltip {
+    will-change: transform, opacity;
+    transition:
+      opacity 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(4px) scale(0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+</style>

@@ -12,13 +12,11 @@ const {
 } = Astro.props;
 ---
 
-<a href={url} class="block">
+<a href={url} class="block group">
   <article
-    class="flex flex-col w-72 h-100 border-[#232323] border bg-[#0a090f] rounded-lg p-1 cursor-pointer hover:scale-105 group transition ease-in-out"
+    class="article-card flex flex-col w-72 h-100 glass-card rounded-xl p-1.5 cursor-pointer transition-all duration-400 ease-out hover-glow card-shine"
   >
-    <div
-      class="relative w-full h-1/2 min-h-1/2 rounded-md overflow-hidden bg-[#232323]"
-    >
+    <div class="relative w-full h-1/2 min-h-1/2 rounded-lg overflow-hidden">
       <Image
         src={img}
         alt={title}
@@ -28,40 +26,59 @@ const {
         quality={80}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
-        class="w-full h-full object-cover rounded-md transition-transform duration-300 group-hover:scale-110"
+        class="w-full h-full object-cover rounded-lg transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
       />
 
+      <!-- Gradient overlay on hover -->
       <div
-        class="absolute inset-0 bg-linear-to-r from-[#232323] via-[#2a2a2a] to-[#232323] animate-pulse -z-10"
+        class="absolute inset-0 bg-gradient-to-t from-[#0a090f]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-lg"
+      >
+      </div>
+
+      <!-- Loading skeleton -->
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-[#191919] via-[#232323] to-[#191919] shimmer -z-10 rounded-lg"
       >
       </div>
     </div>
 
-    <section class="px-2 flex flex-col justify-between h-full">
+    <section class="px-2.5 flex flex-col justify-between h-full pt-1">
       <div>
-        <h2 class="text-xl font-semibold text-red-500 pt-2 line-clamp-3">
+        <h2
+          class="text-xl font-semibold text-red-500 pt-2 line-clamp-3 transition-all duration-300 group-hover:text-red-400"
+        >
           {title}
         </h2>
-        <p class="text-sm line-clamp-2 overflow-ellipsis pt-2">{description}</p>
+        <p
+          class="text-sm line-clamp-2 overflow-ellipsis pt-2 text-[#efefe5]/80 transition-colors duration-300 group-hover:text-[#efefe5]"
+        >
+          {description}
+        </p>
       </div>
 
       <footer
-        class="w-full flex justify-between py-2 items-center border-t border-[#232323]"
+        class="w-full flex justify-between py-2 items-center border-t border-[#232323]/50"
       >
-        <div class="flex gap-1 items-center">
-          <img
-            class="size-8 rounded-full border border-[#232323]"
-            src="/favicon.svg"
-            alt={`${author} avatar`}
-            loading="lazy"
-            decoding="async"
-            width="32"
-            height="32"
-          />
+        <div class="flex gap-2 items-center">
+          <div class="relative">
+            <img
+              class="size-8 rounded-full border border-[#232323] transition-all duration-300 group-hover:border-red-500/30"
+              src="/favicon.svg"
+              alt={`${author} avatar`}
+              loading="lazy"
+              decoding="async"
+              width="32"
+              height="32"
+            />
+            <div
+              class="absolute inset-0 rounded-full bg-red-500/0 group-hover:bg-red-500/10 transition-colors duration-300"
+            >
+            </div>
+          </div>
           <div class="flex flex-col">
             <p class="text-xs font-extrabold">{author}</p>
             <time
-              class="text-xs font-extralight"
+              class="text-xs font-extralight text-[#efefe5]/60"
               datetime={pubDate.toISOString()}
             >
               {
@@ -75,32 +92,39 @@ const {
             </time>
           </div>
         </div>
-        <Icon name="right_line" class="size-5" aria-hidden="true" />
+        <div
+          class="arrow-container bg-[#191919]/50 p-2 rounded-full transition-all duration-300 group-hover:bg-red-500/20 group-hover:translate-x-1"
+        >
+          <Icon
+            name="right_line"
+            class="size-4 transition-colors duration-300 group-hover:text-red-400"
+            aria-hidden="true"
+          />
+        </div>
       </footer>
     </section>
   </article>
 </a>
 
 <style>
-  article {
-    will-change: transform;
+  .article-card {
+    will-change: transform, box-shadow;
+    transform: translateY(0) scale(1);
+  }
+
+  .article-card:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  .article-card:active {
+    transform: translateY(-4px) scale(1.01);
   }
 
   img {
     will-change: transform;
   }
 
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .duration-400 {
+    transition-duration: 400ms;
   }
 </style>

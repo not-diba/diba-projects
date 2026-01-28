@@ -21,6 +21,7 @@
     "three": "^0.174.0"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.3.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/three": "^0.174.0",
     "prettier": "^3.7.4",

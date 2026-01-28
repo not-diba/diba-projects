@@ -16,8 +16,12 @@ const recentCrafts = crafts.slice(0, 4);
     <div
       class="w-full h-full flex flex-col lg:flex-row md:flex-row justify-between"
     >
-      <div class="flex flex-col w-full md:w-75 lg:w-75 gap-3 self-center">
-        <p>RECENT WRITINGS</p>
+      <div
+        class="flex flex-col w-full md:w-75 lg:w-75 gap-3 self-center reveal reveal-left"
+      >
+        <p class="text-sm tracking-widest text-[#efefe5]/60 uppercase">
+          Recent Writings
+        </p>
         <div class="flex flex-col gap-4 w-full">
           {
             [...recentArticles]
@@ -26,24 +30,36 @@ const recentCrafts = crafts.slice(0, 4);
                   new Date(b.data.pubDate).getTime() -
                   new Date(a.data.pubDate).getTime(),
               )
-              .map((article) => (
-                <RecentItem
-                  title={article.data.title}
-                  description={article.data.description}
-                  img={article.data.image.url}
-                  url={`/writing/${article.id}`}
-                />
+              .map((article, index) => (
+                <div
+                  class="reveal reveal-stagger"
+                  style={`animation-delay: ${index * 100}ms`}
+                >
+                  <RecentItem
+                    title={article.data.title}
+                    description={article.data.description}
+                    img={article.data.image.url}
+                    url={`/writing/${article.id}`}
+                    priority={index === 0}
+                  />
+                </div>
               ))
           }
         </div>
       </div>
 
-      <Robot />
+      <div
+        class="flex-1 flex items-center justify-center min-h-[400px] md:h-full overflow-visible"
+      >
+        <Robot />
+      </div>
 
       <div
-        class="flex flex-col w-full md:w-75 lg:w-75 gap-3 self-center pb-64 md:pb-0 lg:pb-0"
+        class="flex flex-col w-full md:w-75 lg:w-75 gap-3 self-center pb-64 md:pb-0 lg:pb-0 reveal reveal-right"
       >
-        <p>RECENT CRAFTS</p>
+        <p class="text-sm tracking-widest text-[#efefe5]/60 uppercase">
+          Recent Crafts
+        </p>
         <div class="flex flex-col gap-4 w-full">
           {
             [...recentCrafts]
@@ -52,14 +68,20 @@ const recentCrafts = crafts.slice(0, 4);
                   new Date(b.data.pubDate).getTime() -
                   new Date(a.data.pubDate).getTime(),
               )
-              .map((craft) => (
-                <RecentItem
-                  key={craft.id}
-                  title={craft.data.title}
-                  description={craft.data.description}
-                  img={craft.data.image.url}
-                  url={`/craft/${craft.id}`}
-                />
+              .map((craft, index) => (
+                <div
+                  class="reveal reveal-stagger"
+                  style={`animation-delay: ${index * 100}ms`}
+                >
+                  <RecentItem
+                    key={craft.id}
+                    title={craft.data.title}
+                    description={craft.data.description}
+                    img={craft.data.image.url}
+                    url={`/craft/${craft.id}`}
+                    priority={index === 0}
+                  />
+                </div>
               ))
           }
         </div>

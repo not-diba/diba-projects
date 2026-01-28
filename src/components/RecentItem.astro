@@ -5,19 +5,18 @@ const { title, description, img, url, priority = false } = Astro.props;
 ---
 
 <a
-  class="border-[#232323] border bg-[#0a090f]
+  class="recent-item glass-card
          flex gap-3 h-18 lg:w-87.5 md:w-87.5 w-full
          rounded-full p-1.5 cursor-pointer
          justify-between items-center
-         transition-transform duration-300 ease-out
-         hover:scale-110
-         odd:hover:-skew-2 even:hover:skew-2
+         transition-all duration-400 ease-out
+         hover-glow card-shine
          group"
   href={url}
   title={title}
 >
   <div class="flex gap-3 h-full">
-    <div class="w-14 h-full rounded-full overflow-hidden bg-[#232323] shrink-0">
+    <div class="relative w-14 h-full rounded-full overflow-hidden shrink-0">
       <Image
         src={img}
         alt={title}
@@ -27,38 +26,77 @@ const { title, description, img, url, priority = false } = Astro.props;
         quality={80}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
-        class="w-full h-full object-cover rounded-full"
+        class="w-full h-full object-cover rounded-full transition-all duration-400 group-hover:scale-110 group-hover:brightness-110"
       />
+      <!-- Glow ring on hover -->
+      <div
+        class="absolute inset-0 rounded-full ring-2 ring-red-500/0 group-hover:ring-red-500/30 transition-all duration-400"
+      >
+      </div>
     </div>
 
-    <div class="flex flex-col w-44 min-w-0">
-      <p class="text-lg font-medium text-red-500 truncate">
+    <div class="flex flex-col w-44 min-w-0 justify-center">
+      <p
+        class="text-lg font-medium text-red-500 truncate transition-colors duration-300 group-hover:text-red-400"
+      >
         {title}
       </p>
-      <p class="text-base truncate">
+      <p
+        class="text-base truncate text-[#efefe5]/70 transition-colors duration-300 group-hover:text-[#efefe5]"
+      >
         {description}
       </p>
     </div>
   </div>
 
   <div
-    class="bg-[#191919] border-[1.2px] border-[#232323]
+    class="arrow-btn glass
            w-14 h-14 rounded-full
            flex items-center justify-center
-           transition-transform duration-300 ease-out
-           odd:group-hover:-skew-2 even:group-hover:skew-2
-           shrink-0"
+           transition-all duration-400 ease-out
+           shrink-0
+           group-hover:bg-red-500/10"
   >
-    <Icon name="arrow_right_line" class="size-6" aria-hidden="true" />
+    <Icon
+      name="arrow_right_line"
+      class="size-6 transition-all duration-300 group-hover:text-red-400 group-hover:translate-x-1"
+      aria-hidden="true"
+    />
   </div>
 </a>
 
 <style>
-  a {
+  .recent-item {
+    will-change: transform, box-shadow;
+    transform: translateX(0) scale(1);
+  }
+
+  .recent-item:hover {
+    transform: translateX(8px) scale(1.03);
+  }
+
+  .recent-item:active {
+    transform: translateX(4px) scale(1.01);
+  }
+
+  /* Alternating subtle rotation on hover */
+  .recent-item:nth-child(odd):hover {
+    transform: translateX(8px) scale(1.03) rotate(-0.5deg);
+  }
+
+  .recent-item:nth-child(even):hover {
+    transform: translateX(8px) scale(1.03) rotate(0.5deg);
+  }
+
+  .arrow-btn {
+    will-change: transform, background-color;
+  }
+
+  img {
     will-change: transform;
   }
 
-  a > div:last-child {
-    will-change: transform;
+  .duration-400 {
+    transition-duration: 400ms;
   }
 </style>
