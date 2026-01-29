@@ -10,8 +10,6 @@ image:
 tags: ["Flutter", "Nextjs", "blogging", "learning in public"]
 ---
 
-# Kimu foods
-
 ![Kimu foods website](/crafts/kimu-foods.avif)
 
 This will be a brief overview of [Kimu Foods](https://main.d1wj048yong21r.amplifyapp.com/), a recipe-based grocery delivery app. I will mostly go over the current architecture as well as my plans for it.

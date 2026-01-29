@@ -1,6 +1,21 @@
 ---
-import Nav from "../components/Nav.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 import "../styles/global.css";
+
+const { frontmatter } = Astro.props;
+const title = frontmatter?.title || "Article";
+const pubDate = frontmatter?.pubDate;
+const author = frontmatter?.author;
+const description = frontmatter?.description;
+
+// Format date
+const formattedDate = pubDate
+  ? new Date(pubDate).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : null;
 ---
 
 <!doctype html>
@@ -10,18 +25,440 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>
-      Diba projects
-    </title>
+    <meta
+      name="description"
+      content={description || "Article on diba.projects"}
+    />
+    <title>{title} | Diba Projects</title>
   </head>
-  <body
-    class="flex flex-col h-full w-full pt-20 pb-64 bg-[#0a090f] text-[#efefe5]"
-  >
-    <div
-      class="font-sans text-xl overflow-y-auto overflow-x-hidden text-justify mx-auto prose lg:prose-xl text-[#efefe5] prose-headings:text-[#efefe5] prose-strong:text-[#efefe5] prose-code:text-[#efefe5] prose-img:rounded-md prose-img:border prose-img:border-gray-700 prose-a:text-red-500 prose-code:text-sm px-8 lg:px-0 w-screen"
-    >
-      <slot />
-    </div>
-    <Nav goBack={true} />
+  <body class="bg-[#0a090f] text-[#efefe5]">
+    <!-- Reading Progress Bar -->
+    <div id="reading-progress" class="reading-progress-bar"></div>
+
+    <!-- Sticky Header -->
+    <header id="article-header" class="article-header">
+      <div class="header-content">
+        <a
+          href="javascript:history.back()"
+          class="back-button"
+          aria-label="Go back"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span class="back-text">Back</span>
+        </a>
+        <h1 class="header-title">{title}</h1>
+        <div class="header-spacer"></div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="article-main">
+      <!-- Article Header Info -->
+      <div class="article-hero">
+        <div class="article-meta">
+          {formattedDate && <time class="article-date">{formattedDate}</time>}
+          {author && <span class="article-author">by {author}</span>}
+        </div>
+        <h1 class="article-title">{title}</h1>
+        {description && <p class="article-description">{description}</p>}
+      </div>
+
+      <!-- Article Content -->
+      <article
+        class="prose lg:prose-xl prose-invert prose-headings:text-[#efefe5] prose-strong:text-[#efefe5] prose-code:text-[#efefe5] prose-img:rounded-xl prose-img:border prose-img:border-gray-700/50 prose-a:text-red-400 prose-a:no-underline hover:prose-a:underline prose-code:text-sm prose-pre:bg-[#1a1a1f] prose-pre:border prose-pre:border-white/10 prose-blockquote:border-l-red-400 prose-blockquote:bg-white/5 prose-blockquote:rounded-r-lg prose-blockquote:py-1"
+      >
+        <slot />
+      </article>
+
+      <!-- Article Footer -->
+      <footer class="article-footer">
+        <div class="footer-divider"></div>
+        <div class="footer-actions">
+          <a href="javascript:history.back()" class="footer-back-btn">
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Go back
+          </a>
+          <button
+            id="scroll-to-top"
+            class="scroll-top-btn"
+            aria-label="Scroll to top"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+            Back to top
+          </button>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Table of Contents -->
+    <TableOfContents />
+
+    <script>
+      // Reading progress bar
+      function updateReadingProgress() {
+        const progressBar = document.getElementById("reading-progress");
+        const article = document.querySelector(".article-main");
+        if (!progressBar || !article) return;
+
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const scrollY = window.scrollY;
+
+        const progress = Math.min(
+          100,
+          Math.max(
+            0,
+            ((scrollY - articleTop + windowHeight * 0.3) /
+              (articleHeight - windowHeight * 0.5)) *
+              100,
+          ),
+        );
+
+        progressBar.style.width = `${progress}%`;
+      }
+
+      // Sticky header show/hide
+      function handleHeaderVisibility() {
+        const header = document.getElementById("article-header");
+        if (!header) return;
+
+        const scrollY = window.scrollY;
+
+        if (scrollY > 200) {
+          header.classList.add("visible");
+        } else {
+          header.classList.remove("visible");
+        }
+      }
+
+      // Scroll to top
+      function initScrollToTop() {
+        const scrollBtn = document.getElementById("scroll-to-top");
+        if (scrollBtn) {
+          scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        }
+      }
+
+      // Initialize
+      function initArticle() {
+        updateReadingProgress();
+        handleHeaderVisibility();
+        initScrollToTop();
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            updateReadingProgress();
+            handleHeaderVisibility();
+          },
+          { passive: true },
+        );
+      }
+
+      document.addEventListener("DOMContentLoaded", initArticle);
+      document.addEventListener("astro:page-load", initArticle);
+    </script>
+
+    <style>
+      /* Reading Progress Bar */
+      .reading-progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0%;
+        background: linear-gradient(90deg, #ef4444, #f97316);
+        z-index: 9999;
+        transition: width 0.1s ease-out;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+      }
+
+      /* Sticky Header */
+      .article-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(10, 9, 15, 0.9);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transform: translateY(-100%);
+        opacity: 0;
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .article-header.visible {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .back-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #a6a6a2;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .back-button:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+      }
+
+      .back-text {
+        display: none;
+      }
+
+      @media (min-width: 640px) {
+        .back-text {
+          display: inline;
+        }
+      }
+
+      .header-title {
+        flex: 1;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #efefe5;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+      }
+
+      .header-spacer {
+        width: 80px;
+        flex-shrink: 0;
+      }
+
+      /* Article Main */
+      .article-main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 8rem;
+      }
+
+      @media (min-width: 1280px) {
+        .article-main {
+          margin-left: calc(50% - 360px - 140px);
+        }
+      }
+
+      /* Article Hero */
+      .article-hero {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        color: #a6a6a2;
+      }
+
+      .article-date {
+        color: #ef4444;
+      }
+
+      .article-author::before {
+        content: "•";
+        margin-right: 0.75rem;
+      }
+
+      .article-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        color: #efefe5;
+      }
+
+      @media (min-width: 640px) {
+        .article-title {
+          font-size: 3rem;
+        }
+      }
+
+      .article-description {
+        font-size: 1.25rem;
+        color: #a6a6a2;
+        line-height: 1.6;
+      }
+
+      /* Article Footer */
+      .article-footer {
+        margin-top: 4rem;
+      }
+
+      .footer-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        margin-bottom: 2rem;
+      }
+
+      .footer-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .footer-back-btn,
+      .scroll-top-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .footer-back-btn {
+        background: rgba(255, 255, 255, 0.05);
+        color: #a6a6a2;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-back-btn:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+      }
+
+      .scroll-top-btn {
+        background: transparent;
+        color: #a6a6a2;
+        border: none;
+      }
+
+      .scroll-top-btn:hover {
+        color: #efefe5;
+      }
+
+      /* Prose Overrides */
+      .prose {
+        color: #d1d1c7;
+      }
+
+      .prose h1:first-child {
+        display: none;
+      }
+
+      .prose h1,
+      .prose h2,
+      .prose h3 {
+        scroll-margin-top: 5rem;
+      }
+
+      .prose h2 {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .prose img {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .prose code:not(pre code) {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-size: 0.875em;
+      }
+
+      .prose pre {
+        border-radius: 0.75rem;
+      }
+
+      .prose blockquote {
+        font-style: normal;
+        padding-left: 1.5rem;
+        padding-right: 1rem;
+      }
+
+      .prose a {
+        text-decoration-color: rgba(239, 68, 68, 0.3);
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.2s ease;
+      }
+
+      .prose a:hover {
+        text-decoration-color: #ef4444;
+      }
+
+      /* Copy button for code blocks */
+      .prose pre {
+        position: relative;
+      }
+    </style>
   </body>
 </html>

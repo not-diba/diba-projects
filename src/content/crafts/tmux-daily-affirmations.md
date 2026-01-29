@@ -10,8 +10,6 @@ image:
 tags: ["Vim", "Neovim", "blogging", "TMUX", "learning in public"]
 ---
 
-# TMUX Daily Affirmatiosns
-
 ## What is TMUX ?
 
 TMUX is a terminal multiplexer that allows you to manage multiple terminal sessions within a single window. It enables you to create, access, and control multiple terminal sessions from a single screen, making it easier to multitask and organize your work in the terminal. This becomes useful when running multiple programs with a single connection, such as when you are connected to a remote server via SSH.

@@ -5,7 +5,7 @@ const isActive = Astro.url.pathname === route;
 
 <a
   href={route === "back" ? "/" : route}
-  class={`nav-link px-6 py-1.5 text-center text-xl items-center justify-center transition-all duration-300 relative
+  class={`nav-link px-10 py-4 text-center text-2xl items-center justify-center transition-all duration-300 relative
     ${isActive ? "text-[#efefe5]" : "text-[#a6a6a2] hover:text-[#efefe5]"}`}
   onclick={route === "back"
     ? `preventDefault(); if (history.length > 1) { history.back(); } else { location.href = '/'; }`
@@ -17,22 +17,6 @@ const isActive = Astro.url.pathname === route;
 <style>
   .nav-link {
     will-change: transform, color;
-  }
-
-  .nav-link::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    opacity: 0;
-    transform: scale(0.9);
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .nav-link:hover::before {
-    opacity: 1;
-    transform: scale(1);
   }
 
   .nav-link:active {

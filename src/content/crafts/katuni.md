@@ -10,8 +10,6 @@ image:
 tags: ["Comics", "Jetpack Compose", "Kotlin", "Android", "Learning in Public"]
 ---
 
-# Katuni Comic Reader App (_Work in Progress_)
-
 ![Katuni comic reader](/crafts/library_screen.webp)
 
 I am building a **comic book reader app** using **Kotlin and Jetpack Compose**.

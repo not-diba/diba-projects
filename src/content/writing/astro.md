@@ -9,8 +9,6 @@ image:
 tags: ["astro", "blogging", "learning in public"]
 ---
 
-# Astro
-
 ![The Astro logo on a dark background with a pink glow.](/writing/astro.avif)
 
 ## What is Astro ?
@@ -219,4 +217,3 @@ import Greeting from "../components/Greeting.astro";
 Working with Astro to build diba .projects was a great experience. My main goal was to create a fast and lightweight website, and Astro turned out to be a solid choice for this. It also gave me a chance to improve my JavaScript skills, as I focused on avoiding external hooks and dependencies.
 
 I plan to write more articles diving deeper into different aspects of Astro as well as other topics, and I’ll also share a detailed look into the documentation process for building diba .projects soon, so stay tuned!
-

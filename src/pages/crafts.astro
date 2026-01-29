@@ -11,24 +11,26 @@ const sortedCrafts = [...crafts].sort(
 ---
 
 <Layout>
-  <div
-    class="pt-8 pb-96 md:px-10 flex flex-col md:grid md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 overflow-y-auto scrollbar-hide w-full max-w-7xl mx-auto"
-  >
-    {
-      sortedCrafts.map((craft, index) => (
-        <div
-          class="reveal reveal-stagger"
-          style={`animation-delay: ${index * 100}ms`}
-        >
-          <CraftItem
-            title={craft.data.title}
-            description={craft.data.description}
-            img={craft.data.image.url}
-            video={craft.data.video}
-            url={`/craft/${craft.id}`}
-          />
-        </div>
-      ))
-    }
+  <div class="pt-12 pb-96 px-6 md:px-12 lg:px-16 w-full max-w-7xl mx-auto">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10"
+    >
+      {
+        sortedCrafts.map((craft, index) => (
+          <div
+            class="reveal reveal-stagger"
+            style={`animation-delay: ${index * 100}ms`}
+          >
+            <CraftItem
+              title={craft.data.title}
+              description={craft.data.description}
+              img={craft.data.image.url}
+              video={craft.data.video}
+              url={`/craft/${craft.id}`}
+            />
+          </div>
+        ))
+      }
+    </div>
   </div>
 </Layout>

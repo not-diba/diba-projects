@@ -1,0 +1,273 @@
+---
+// Table of Contents component - Notion-style with active heading indicator
+---
+
+<aside
+  id="toc-sidebar"
+  class="toc-sidebar hidden xl:block fixed right-8 top-1/2 -translate-y-1/2 w-64 max-h-[70vh] overflow-y-auto"
+>
+  <div class="toc-container glass rounded-2xl p-4">
+    <p
+      class="text-xs font-semibold text-[#a6a6a2] uppercase tracking-wider mb-4"
+    >
+      On this page
+    </p>
+    <nav
+      id="toc-nav"
+      class="toc-nav flex flex-col gap-1"
+      aria-label="Table of contents"
+    >
+      <!-- TOC items will be injected here by JS -->
+    </nav>
+  </div>
+</aside>
+
+<script>
+  class TableOfContents {
+    constructor() {
+      this.tocNav = document.getElementById("toc-nav");
+      this.headings = [];
+      this.tocItems = [];
+      this.observer = null;
+      this.init();
+    }
+
+    init() {
+      // Find all headings in the article
+      const article = document.querySelector(".prose");
+      if (!article || !this.tocNav) return;
+
+      this.headings = Array.from(article.querySelectorAll("h1, h2, h3"));
+
+      if (this.headings.length === 0) return;
+
+      // Generate IDs for headings that don't have them
+      this.headings.forEach((heading, index) => {
+        if (!heading.id) {
+          heading.id = `heading-${index}`;
+        }
+      });
+
+      // Build TOC
+      this.buildTOC();
+
+      // Set up scroll listener for active state
+      this.setupScrollListener();
+    }
+
+    buildTOC() {
+      this.tocNav.innerHTML = "";
+
+      this.headings.forEach((heading) => {
+        const level = parseInt(heading.tagName.charAt(1));
+        const item = document.createElement("a");
+        item.href = `#${heading.id}`;
+        item.className = `toc-item toc-level-${level}`;
+        item.dataset.headingId = heading.id;
+
+        // Create the indicator line
+        const indicator = document.createElement("span");
+        indicator.className = "toc-indicator";
+
+        // Create the text
+        const text = document.createElement("span");
+        text.className = "toc-text";
+        text.textContent = heading.textContent;
+
+        item.appendChild(indicator);
+        item.appendChild(text);
+
+        // Smooth scroll on click
+        item.addEventListener("click", (e) => {
+          e.preventDefault();
+          heading.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Update URL without scrolling
+          history.pushState(null, "", `#${heading.id}`);
+        });
+
+        this.tocNav.appendChild(item);
+        this.tocItems.push({ element: item, headingId: heading.id });
+      });
+    }
+
+    setupScrollListener() {
+      // Use scroll event for more reliable tracking
+      const updateActiveHeading = () => {
+        const scrollY = window.scrollY;
+        const offset = 120; // Account for sticky header
+
+        let currentHeading = null;
+
+        // Find the heading that's currently at the top of the viewport
+        for (let i = this.headings.length - 1; i >= 0; i--) {
+          const heading = this.headings[i];
+          const rect = heading.getBoundingClientRect();
+
+          if (rect.top <= offset) {
+            currentHeading = heading;
+            break;
+          }
+        }
+
+        // If no heading is past the offset, use the first one if we're near the top
+        if (!currentHeading && this.headings.length > 0 && scrollY < 200) {
+          currentHeading = this.headings[0];
+        }
+
+        if (currentHeading) {
+          this.setActiveItem(currentHeading.id);
+        }
+      };
+
+      // Throttle scroll events
+      let ticking = false;
+      this.scrollHandler = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateActiveHeading();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      window.addEventListener("scroll", this.scrollHandler, { passive: true });
+
+      // Initial check
+      updateActiveHeading();
+    }
+
+    setActiveItem(headingId) {
+      this.tocItems.forEach(({ element, headingId: id }) => {
+        if (id === headingId) {
+          element.classList.add("active");
+        } else {
+          element.classList.remove("active");
+        }
+      });
+    }
+
+    cleanup() {
+      if (this.scrollHandler) {
+        window.removeEventListener("scroll", this.scrollHandler);
+      }
+    }
+  }
+
+  let toc = null;
+
+  function initTOC() {
+    if (toc) {
+      toc.cleanup();
+    }
+    toc = new TableOfContents();
+  }
+
+  document.addEventListener("DOMContentLoaded", initTOC);
+  document.addEventListener("astro:page-load", initTOC);
+  document.addEventListener("astro:before-swap", () => {
+    if (toc) {
+      toc.cleanup();
+    }
+  });
+</script>
+
+<style>
+  .toc-sidebar {
+    z-index: 100;
+  }
+
+  .toc-container {
+    background: rgba(10, 9, 15, 0.8);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .toc-nav {
+    position: relative;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .toc-indicator {
+    width: 2px;
+    height: 100%;
+    min-height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .toc-text {
+    font-size: 0.8rem;
+    color: #a6a6a2;
+    transition: color 0.2s ease;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .toc-item:hover .toc-text {
+    color: #efefe5;
+  }
+
+  .toc-item:hover .toc-indicator {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .toc-item.active .toc-indicator {
+    background: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  }
+
+  .toc-item.active .toc-text {
+    color: #ef4444;
+    font-weight: 500;
+  }
+
+  /* Indentation for different heading levels */
+  .toc-level-1 {
+    padding-left: 0;
+  }
+
+  .toc-level-2 {
+    padding-left: 12px;
+  }
+
+  .toc-level-3 {
+    padding-left: 24px;
+  }
+
+  .toc-level-3 .toc-text {
+    font-size: 0.75rem;
+  }
+
+  /* Scrollbar styling */
+  .toc-sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .toc-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .toc-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>

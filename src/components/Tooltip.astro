@@ -54,17 +54,22 @@ const tooltipId = id || "tooltip";
           const viewportWidth = window.innerWidth;
           const viewportHeight = window.innerHeight;
 
-          let left = x + 12;
-          let top = y + 16;
+          let left = x + 2;
+          let top = y - tooltipRect.height - 6;
 
           // Adjust if tooltip would go off right edge
           if (left + tooltipRect.width > viewportWidth - 10) {
-            left = x - tooltipRect.width - 12;
+            left = x - tooltipRect.width - 2;
           }
 
-          // Adjust if tooltip would go off bottom edge
-          if (top + tooltipRect.height > viewportHeight - 10) {
-            top = y - tooltipRect.height - 16;
+          // Adjust if tooltip would go off top edge - show below cursor instead
+          if (top < 10) {
+            top = y + 6;
+          }
+
+          // Adjust if tooltip would go off left edge
+          if (left < 10) {
+            left = 10;
           }
 
           tooltip.style.left = left + "px";
@@ -118,12 +123,16 @@ const tooltipId = id || "tooltip";
   .tooltip {
     will-change: transform, opacity;
     transition:
-      opacity 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transform: translateY(4px) scale(0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(10, 9, 15, 0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 </style>

@@ -27,7 +27,7 @@ const currentPath = Astro.url.pathname;
       <>
         {/* Items before active */}
         {currentPath !== "/" && (
-          <div class="glass-nav rounded-full p-2 flex gap-x-1 items-center">
+          <div class="glass-nav rounded-full p-3 flex gap-x-2 items-center">
             <Tooltip text="Kejani 🏠" id="home">
               <NavLink label="Home" route="/" />
             </Tooltip>
@@ -59,7 +59,7 @@ const currentPath = Astro.url.pathname;
         </div>
 
         {/* Items after active + social links */}
-        <div class="glass-nav rounded-full p-2 flex gap-x-2 items-center">
+        <div class="glass-nav rounded-full p-3 flex gap-x-3 items-center">
           {currentPath === "/" && (
             <>
               <Tooltip text="My articles 📚" id="writing">
@@ -76,7 +76,7 @@ const currentPath = Astro.url.pathname;
             </Tooltip>
           )}
 
-          <div class="h-6 w-px bg-white/10 mx-2" aria-hidden="true" />
+          <div class="h-10 w-px bg-white/10 mx-3" aria-hidden="true" />
 
           <a
             href="https://bsky.app/profile/not-diba.bsky.social"
@@ -109,7 +109,7 @@ const currentPath = Astro.url.pathname;
             </Tooltip>
           </a>
 
-          <div class="h-6 w-px bg-white/10" aria-hidden="true" />
+          <div class="h-10 w-px bg-white/10" aria-hidden="true" />
 
           <a
             href="https://github.com/not-diba"
@@ -138,7 +138,7 @@ const currentPath = Astro.url.pathname;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 50px;
-    padding: 0.375rem 0.375rem;
+    padding: 0.75rem 0.75rem;
     box-shadow:
       0 0 0 1px rgba(239, 68, 68, 0.25),
       0 4px 24px rgba(239, 68, 68, 0.15),
@@ -165,8 +165,8 @@ const currentPath = Astro.url.pathname;
   role="navigation"
   aria-label="Mobile navigation"
 >
-  <nav class="border-[1.2px] border-[#232323] rounded-full bg-[#0a090f] flex w-full">
-    <div class="w-full bg-[#191919] h-8.25 m-1.5 rounded-full flex items-center justify-center py-1.5">
+  <nav class="mobile-nav-glass rounded-full flex w-full">
+    <div class="w-full mobile-nav-inner m-1.5 rounded-full flex items-center justify-center py-2">
       {
         goBack ? (
           <button
@@ -196,19 +196,14 @@ const currentPath = Astro.url.pathname;
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
-              class="fixed inset-x-0 bottom-0 z-3000 transform translate-y-full transition-transform duration-300 ease-in-out bg-[#0a090f] rounded-t-2xl shadow-lg min-h-[56vh] max-h-[100vh] overflow-y-auto border-[1.2px] border-[#232323]"
+              class="bottom-sheet-glass fixed inset-x-0 bottom-0 z-3000 transition-transform duration-300 ease-in-out rounded-t-3xl min-h-[56vh] max-h-[100vh] overflow-y-auto"
+              style="transform: translateY(calc(100% + 20px));"
             >
-              <div class="p-4">
-                <!-- Drag handle -->
-                <div
-                  class="w-12 h-1 mx-auto mb-4 rounded-full bg-[#232323]"
-                  aria-hidden="true"
-                />
-
+              <div class="p-5 pt-6">
                 <div class="flex flex-col gap-4">
                   <!-- Main Navigation Links -->
                   <nav
-                    class="border-[1.2px] border-[#232323] rounded-xl p-2 flex flex-col gap-4"
+                    class="glass rounded-2xl p-3 flex flex-col gap-3"
                     aria-label="Main pages"
                   >
                     <MobileNavItem label="Home" route="/" icon="home_4_line" />
@@ -217,7 +212,7 @@ const currentPath = Astro.url.pathname;
                   </nav>
 
                   <!-- Social Links -->
-                  <div class="flex gap-2 w-full" role="group" aria-label="Social media links">
+                  <div class="flex gap-3 w-full" role="group" aria-label="Social media links">
                     <a
                       class="w-full"
                       href="https://github.com/not-diba"
@@ -249,20 +244,20 @@ const currentPath = Astro.url.pathname;
                     </a>
                   </div>
 
-                  <div class="h-5/6 border-[#232323] border-b" aria-hidden="true" />
+                  <div class="h-px bg-white/10 my-2" aria-hidden="true" />
 
                   <!-- Email Contact -->
                   <a
                     href="mailto:madibaelvis@gmail.com"
-                    class="flex justify-between bg-[#191919] py-1.5 px-3 border border-[#232323] rounded-md hover:bg-[#232323] transition-colors"
+                    class="flex justify-between glass py-3 px-4 rounded-xl hover:bg-white/5 transition-colors"
                     aria-label="Send email to madibaelvis@gmail.com"
                   >
-                    <div class="flex gap-x-3 items-center pl-4 text-center text-white">
+                    <div class="flex gap-x-3 items-center text-center text-[#efefe5]">
                       <p class="underline decoration-dotted">
                         madibaelvis@gmail.com
                       </p>
                     </div>
-                    <div class="text-[#a6a6a2] px-3 text-center items-center rounded-md">
+                    <div class="text-[#a6a6a2] text-center items-center">
                       <Icon name="mail_line" class="text-xl" aria-hidden="true" />
                     </div>
                   </a>
@@ -326,7 +321,7 @@ const currentPath = Astro.url.pathname;
       e.stopPropagation();
 
       if (!this.isOpen) {
-        this.bottomSheet.classList.remove("translate-y-full");
+        this.bottomSheet.style.transform = "translateY(0)";
         this.overlay.classList.remove("opacity-0", "pointer-events-none");
         this.overlay.classList.add("opacity-50");
         this.navToggle.setAttribute("aria-expanded", "true");
@@ -346,7 +341,7 @@ const currentPath = Astro.url.pathname;
       }
 
       if (this.isOpen) {
-        this.bottomSheet.classList.add("translate-y-full");
+        this.bottomSheet.style.transform = "translateY(calc(100% + 20px))";
         this.overlay.classList.add("opacity-0", "pointer-events-none");
         this.overlay.classList.remove("opacity-50");
         this.navToggle.setAttribute("aria-expanded", "false");
@@ -392,11 +387,12 @@ const currentPath = Astro.url.pathname;
     handleTouchEnd() {
       if (!this.isDragging) return;
 
-      this.bottomSheet.style.transform = "";
-
       // Close if dragged down more than 80px
       if (this.currentY - this.startY > 80) {
         this.closeBottomSheet();
+      } else {
+        // Snap back to open position
+        this.bottomSheet.style.transform = "translateY(0)";
       }
 
       this.isDragging = false;
@@ -444,6 +440,33 @@ const currentPath = Astro.url.pathname;
 </script>
 
 <style>
+  .mobile-nav-glass {
+    background: rgba(10, 9, 15, 0.8);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-nav-inner {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .bottom-sheet-glass {
+    background: rgba(10, 9, 15, 0.92);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+    box-shadow:
+      0 -8px 40px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
   #bottomSheet {
     will-change: transform;
   }

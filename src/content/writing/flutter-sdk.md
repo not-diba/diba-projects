@@ -9,8 +9,6 @@ image:
 tags: ["Flutter", "Dart", "learning in public"]
 ---
 
-# Building a Flutter SDK
-
 ![pub.dev](/writing/pub.avif)
 
 ## What is an SDK ?
@@ -178,4 +176,3 @@ dependencies:
 ## Conclusion
 
 Creating a Flutter package is a great way to increase the adoption of your service by making integration simple and seamless for other developers. Whether you're working as an individual developer or part of a team, packaging your code can save others from facing the same challenges you’ve already solved. By sharing your solution, you contribute to the wider developer community and help accelerate app development. I'll be documenting the full process of building and publishing a Flutter package soon, and I'm also considering open-sourcing the project to encourage collaboration and feedback.
-

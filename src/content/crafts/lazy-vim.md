@@ -10,8 +10,6 @@ image:
 tags: ["Vim", "Neovim", "blogging", "learning in public"]
 ---
 
-# Neovim
-
 ## What is Neovim ?
 
 [Neovim](https://neovim.io/) is a text editor that's a fork of [Vim](https://www.vim.org/about.php), built with the goal of being highly customisable and extensible through plugins. With the right plugins, Neovim can be transformed into a fully featured IDE (Integrated Development Environment).
