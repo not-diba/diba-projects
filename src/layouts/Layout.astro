@@ -2,6 +2,10 @@
 import Nav from "../components/Nav.astro";
 import ScrambleText from "../components/ScrambleText.astro";
 import Tooltip from "../components/Tooltip.astro";
+import CustomCursor from "../components/CustomCursor.astro";
+import CommandPalette from "../components/CommandPalette.astro";
+import MagneticElement from "../components/MagneticElement.astro";
+import ParticleBackground from "../components/ParticleBackground.astro";
 import "../styles/global.css";
 ---
 
@@ -64,6 +68,12 @@ import "../styles/global.css";
     </header>
     <slot />
     <Nav />
+
+    <!-- Global Components -->
+    <ParticleBackground />
+    <CustomCursor />
+    <CommandPalette />
+    <MagneticElement />
   </body>
 </html>
 

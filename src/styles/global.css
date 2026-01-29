@@ -423,6 +423,66 @@
   transform: scale(0.98);
 }
 
+/* ===== PAGE TRANSITION MORPHING ===== */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both fade-out-scale;
+}
+
+::view-transition-new(root) {
+  animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both fade-in-scale;
+}
+
+@keyframes fade-out-scale {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Card morph transitions */
+::view-transition-old(card-morph),
+::view-transition-new(card-morph) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+::view-transition-old(card-image),
+::view-transition-new(card-image) {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  object-fit: cover;
+}
+
+::view-transition-old(card-title),
+::view-transition-new(card-title) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Cross-fade for grouped elements */
+::view-transition-group(card-morph) {
+  animation-duration: 0.5s;
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
@@ -444,5 +504,12 @@
 
   .card-shine::after {
     display: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(card-morph),
+  ::view-transition-new(card-morph) {
+    animation: none;
   }
 }

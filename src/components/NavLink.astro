@@ -5,8 +5,10 @@ const isActive = Astro.url.pathname === route;
 
 <a
   href={route === "back" ? "/" : route}
-  class={`nav-link px-10 py-4 text-center text-2xl items-center justify-center transition-all duration-300 relative
+  class={`nav-link magnetic px-10 py-4 text-center text-2xl items-center justify-center transition-all duration-300 relative
     ${isActive ? "text-[#efefe5]" : "text-[#a6a6a2] hover:text-[#efefe5]"}`}
+  data-magnetic
+  data-magnetic-strength="0.2"
   onclick={route === "back"
     ? `preventDefault(); if (history.length > 1) { history.back(); } else { location.href = '/'; }`
     : undefined}

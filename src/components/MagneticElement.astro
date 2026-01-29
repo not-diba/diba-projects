@@ -1,0 +1,113 @@
+---
+// Magnetic Element - Makes elements subtly follow the cursor
+---
+
+<script>
+  class MagneticElements {
+    constructor() {
+      this.elements = [];
+      this.mouse = { x: 0, y: 0 };
+      this.init();
+    }
+
+    init() {
+      // Find all magnetic elements
+      const magneticEls = document.querySelectorAll('.magnetic, [data-magnetic]');
+
+      magneticEls.forEach(el => {
+        const strength = parseFloat(el.dataset.magneticStrength) || 0.3;
+        const distance = parseFloat(el.dataset.magneticDistance) || 100;
+
+        this.elements.push({
+          el,
+          strength,
+          distance,
+          rect: el.getBoundingClientRect(),
+          x: 0,
+          y: 0
+        });
+      });
+
+      // Track mouse
+      document.addEventListener('mousemove', (e) => {
+        this.mouse.x = e.clientX;
+        this.mouse.y = e.clientY;
+      });
+
+      // Update on resize
+      window.addEventListener('resize', () => this.updateRects());
+      window.addEventListener('scroll', () => this.updateRects(), { passive: true });
+
+      // Animation loop
+      this.animate();
+    }
+
+    updateRects() {
+      this.elements.forEach(item => {
+        item.rect = item.el.getBoundingClientRect();
+      });
+    }
+
+    animate() {
+      this.elements.forEach(item => {
+        const rect = item.el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const deltaX = this.mouse.x - centerX;
+        const deltaY = this.mouse.y - centerY;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance < item.distance) {
+          // Calculate magnetic pull (stronger when closer)
+          const pull = (1 - distance / item.distance) * item.strength;
+          item.x = deltaX * pull;
+          item.y = deltaY * pull;
+        } else {
+          // Ease back to center
+          item.x *= 0.85;
+          item.y *= 0.85;
+        }
+
+        // Apply transform
+        if (Math.abs(item.x) > 0.1 || Math.abs(item.y) > 0.1) {
+          item.el.style.transform = `translate(${item.x}px, ${item.y}px)`;
+        } else {
+          item.el.style.transform = '';
+        }
+      });
+
+      requestAnimationFrame(() => this.animate());
+    }
+
+    cleanup() {
+      this.elements.forEach(item => {
+        item.el.style.transform = '';
+      });
+      this.elements = [];
+    }
+  }
+
+  let magnetic = null;
+
+  function initMagnetic() {
+    if (magnetic) {
+      magnetic.cleanup();
+    }
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+      magnetic = new MagneticElements();
+    }, 100);
+  }
+
+  document.addEventListener('DOMContentLoaded', initMagnetic);
+  document.addEventListener('astro:page-load', initMagnetic);
+</script>
+
+<style is:global>
+  .magnetic,
+  [data-magnetic] {
+    will-change: transform;
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+</style>
