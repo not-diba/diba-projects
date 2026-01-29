@@ -4,7 +4,7 @@ const { icon, hoverIcon } = Astro.props;
 ---
 
 <ul
-  class="nav-icon w-full sm:w-full h-fit px-6 py-3 rounded-xl glass flex items-center justify-center cursor-pointer relative group transition-all duration-300"
+  class="nav-icon w-full sm:w-full h-fit px-6 py-3 rounded-xl flex items-center justify-center cursor-pointer relative group transition-all duration-300"
 >
   <Icon
     name={icon}
@@ -20,11 +20,14 @@ const { icon, hoverIcon } = Astro.props;
 <style>
   .nav-icon {
     will-change: transform, background-color;
+    background: rgba(30, 30, 35, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
   .nav-icon:hover {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
   }
 
   .nav-icon:active {

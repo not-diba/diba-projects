@@ -76,7 +76,7 @@ const currentPath = Astro.url.pathname;
             </Tooltip>
           )}
 
-          <div class="h-10 w-px bg-white/10 mx-3" aria-hidden="true" />
+          {currentPath !== "/crafts/" && <div class="h-10 w-px bg-white/10 mx-3" aria-hidden="true" />}
 
           <a
             href="https://bsky.app/profile/not-diba.bsky.social"
@@ -161,7 +161,7 @@ const currentPath = Astro.url.pathname;
 <!-- Mobile Navigation -->
 <div
   id="mobile-nav"
-  class="lg:hidden w-4/5 h-fit fixed bottom-0 z-1000 mb-8 text-xl self-center"
+  class="lg:hidden w-[92%] h-fit fixed bottom-0 z-1000 mb-8 text-xl self-center transition-opacity duration-300"
   role="navigation"
   aria-label="Mobile navigation"
 >
@@ -177,107 +177,130 @@ const currentPath = Astro.url.pathname;
             <NavLink label="Back" route="#" />
           </button>
         ) : (
-          <>
-            <button
-              id="navToggle"
-              class="cursor-pointer"
-              aria-label="Open navigation menu"
-              aria-expanded="false"
-              aria-controls="bottomSheet"
-            >
-              {currentPath === "/" && <NavLink label="Home" route="#" />}
-              {currentPath === "/writing/" && <NavLink label="Writing" route="#" />}
-              {currentPath === "/crafts/" && <NavLink label="Crafts" route="#" />}
-            </button>
-
-            <!-- Bottom Sheet -->
-            <div
-              id="bottomSheet"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation menu"
-              class="bottom-sheet-glass fixed inset-x-0 bottom-0 z-3000 transition-transform duration-300 ease-in-out rounded-t-3xl min-h-[56vh] max-h-[100vh] overflow-y-auto"
-              style="transform: translateY(calc(100% + 20px));"
-            >
-              <div class="p-5 pt-6">
-                <div class="flex flex-col gap-4">
-                  <!-- Main Navigation Links -->
-                  <nav
-                    class="glass rounded-2xl p-3 flex flex-col gap-3"
-                    aria-label="Main pages"
-                  >
-                    <MobileNavItem label="Home" route="/" icon="home_4_line" />
-                    <MobileNavItem label="Writing" route="/writing/" icon="paper_line" />
-                    <MobileNavItem label="Crafts" route="/crafts/" icon="tool_line" />
-                  </nav>
-
-                  <!-- Social Links -->
-                  <div class="flex gap-3 w-full" role="group" aria-label="Social media links">
-                    <a
-                      class="w-full"
-                      href="https://github.com/not-diba"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="GitHub"
-                    >
-                      <NavIcon icon="github_line" hoverIcon="github_fill" />
-                    </a>
-
-                    <a
-                      class="w-full"
-                      href="https://www.linkedin.com/in/madiba-elvis/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="LinkedIn"
-                    >
-                      <NavIcon icon="linkedin_line" hoverIcon="linkedin_fill" />
-                    </a>
-
-                    <a
-                      class="w-full"
-                      href="https://bsky.app/profile/not-diba.bsky.social"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Bluesky"
-                    >
-                      <NavIcon icon="bluesky_social_line" hoverIcon="bluesky_social_fill" />
-                    </a>
-                  </div>
-
-                  <div class="h-px bg-white/10 my-2" aria-hidden="true" />
-
-                  <!-- Email Contact -->
-                  <a
-                    href="mailto:madibaelvis@gmail.com"
-                    class="flex justify-between glass py-3 px-4 rounded-xl hover:bg-white/5 transition-colors"
-                    aria-label="Send email to madibaelvis@gmail.com"
-                  >
-                    <div class="flex gap-x-3 items-center text-center text-[#efefe5]">
-                      <p class="underline decoration-dotted">
-                        madibaelvis@gmail.com
-                      </p>
-                    </div>
-                    <div class="text-[#a6a6a2] text-center items-center">
-                      <Icon name="mail_line" class="text-xl" aria-hidden="true" />
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Overlay -->
-            <div
-              id="overlay"
-              class="fixed inset-0 bg-gray-900/40 backdrop-blur-lg backdrop-filter pointer-events-none transition-all duration-300 ease-in-out z-2000 opacity-0"
-              style="-webkit-backdrop-filter: blur(15px);"
-              aria-hidden="true"
-            />
-          </>
+          <button
+            id="navToggle"
+            class="cursor-pointer"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="bottomSheet"
+          >
+            {currentPath === "/" && <NavLink label="Home" route="#" />}
+            {currentPath === "/writing/" && <NavLink label="Writing" route="#" />}
+            {currentPath === "/crafts/" && <NavLink label="Crafts" route="#" />}
+          </button>
         )
       }
     </div>
   </nav>
 </div>
+
+<!-- Bottom Sheet (outside mobile-nav so it stays visible) -->
+{!goBack && (
+  <>
+    <div
+      id="bottomSheet"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation menu"
+      class="lg:hidden fixed inset-x-0 bottom-0 z-3000 transition-transform duration-300 ease-in-out p-4 pb-8"
+      style="transform: translateY(calc(100% + 20px));"
+    >
+      <div class="flex flex-col gap-3">
+        <!-- Active item - separate bubble like desktop -->
+        <div class="mobile-active-bubble rounded-full p-2">
+          <a
+            href={currentPath}
+            class="flex items-center justify-center gap-3 py-2 px-6 text-[#efefe5]"
+          >
+            <Icon
+              name={currentPath === "/" ? "home_4_line" : currentPath === "/writing/" ? "paper_line" : "tool_line"}
+              class="text-xl"
+            />
+            <span class="text-lg font-medium">
+              {currentPath === "/" ? "Home" : currentPath === "/writing/" ? "Writing" : "Crafts"}
+            </span>
+          </a>
+        </div>
+
+        <!-- Other nav items -->
+        <div class="mobile-sheet-card rounded-2xl p-3 flex flex-col gap-1">
+          {currentPath !== "/" && (
+            <a href="/" class="mobile-nav-item flex items-center gap-3 py-2 px-4 rounded-xl">
+              <Icon name="home_4_line" class="text-xl" />
+              <span class="text-base">Home</span>
+            </a>
+          )}
+          {currentPath !== "/writing/" && (
+            <a href="/writing/" class="mobile-nav-item flex items-center gap-3 py-2 px-4 rounded-xl">
+              <Icon name="paper_line" class="text-xl" />
+              <span class="text-base">Writing</span>
+            </a>
+          )}
+          {currentPath !== "/crafts/" && (
+            <a href="/crafts/" class="mobile-nav-item flex items-center gap-3 py-2 px-4 rounded-xl">
+              <Icon name="tool_line" class="text-xl" />
+              <span class="text-base">Crafts</span>
+            </a>
+          )}
+        </div>
+
+        <!-- Social Links -->
+        <div class="flex gap-3 justify-center" role="group" aria-label="Social media links">
+          <a
+            href="https://github.com/not-diba"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <NavIcon icon="github_line" hoverIcon="github_fill" />
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/madiba-elvis/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
+            <NavIcon icon="linkedin_line" hoverIcon="linkedin_fill" />
+          </a>
+
+          <a
+            href="https://bsky.app/profile/not-diba.bsky.social"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Bluesky"
+          >
+            <NavIcon icon="bluesky_social_line" hoverIcon="bluesky_social_fill" />
+          </a>
+        </div>
+
+        <!-- Email Contact -->
+        <a
+          href="mailto:madibaelvis@gmail.com"
+          class="mobile-sheet-card flex justify-between items-center py-3 px-5 rounded-full"
+          aria-label="Send email to madibaelvis@gmail.com"
+        >
+          <div class="flex gap-x-3 items-center text-[#efefe5]">
+            <p class="underline decoration-dotted">
+              madibaelvis@gmail.com
+            </p>
+          </div>
+          <div class="text-[#a6a6a2]">
+            <Icon name="mail_line" class="text-xl" aria-hidden="true" />
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div
+      id="overlay"
+      class="lg:hidden fixed inset-0 bg-gray-900/40 backdrop-blur-lg backdrop-filter pointer-events-none transition-all duration-300 ease-in-out z-2000 opacity-0"
+      style="-webkit-backdrop-filter: blur(15px);"
+      aria-hidden="true"
+    />
+  </>
+)}
 
 <script>
   // Mobile bottom sheet functionality
@@ -320,12 +343,20 @@ const currentPath = Astro.url.pathname;
       e.preventDefault();
       e.stopPropagation();
 
+      const mobileNav = document.getElementById("mobile-nav");
+
       if (!this.isOpen) {
         this.bottomSheet.style.transform = "translateY(0)";
         this.overlay.classList.remove("opacity-0", "pointer-events-none");
         this.overlay.classList.add("opacity-50");
         this.navToggle.setAttribute("aria-expanded", "true");
         this.isOpen = true;
+
+        // Hide the mobile nav button
+        if (mobileNav) {
+          mobileNav.style.opacity = "0";
+          mobileNav.style.pointerEvents = "none";
+        }
 
         // Focus management
         this.bottomSheet.focus();
@@ -340,12 +371,20 @@ const currentPath = Astro.url.pathname;
         return;
       }
 
+      const mobileNav = document.getElementById("mobile-nav");
+
       if (this.isOpen) {
         this.bottomSheet.style.transform = "translateY(calc(100% + 20px))";
         this.overlay.classList.add("opacity-0", "pointer-events-none");
         this.overlay.classList.remove("opacity-50");
         this.navToggle.setAttribute("aria-expanded", "false");
         this.isOpen = false;
+
+        // Show the mobile nav button
+        if (mobileNav) {
+          mobileNav.style.opacity = "1";
+          mobileNav.style.pointerEvents = "auto";
+        }
 
         // Restore body scroll
         document.body.style.overflow = "";
@@ -456,15 +495,42 @@ const currentPath = Astro.url.pathname;
     -webkit-backdrop-filter: blur(12px);
   }
 
-  .bottom-sheet-glass {
-    background: rgba(10, 9, 15, 0.92);
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: none;
+  .mobile-active-bubble {
+    background: linear-gradient(
+      135deg,
+      rgba(239, 68, 68, 0.25) 0%,
+      rgba(239, 68, 68, 0.15) 50%,
+      rgba(180, 50, 50, 0.1) 100%
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(239, 68, 68, 0.3);
     box-shadow:
-      0 -8px 40px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(239, 68, 68, 0.2),
+      0 4px 24px rgba(239, 68, 68, 0.2),
+      0 8px 32px rgba(0, 0, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-sheet-card {
+    background: rgba(25, 25, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .mobile-nav-item {
+    color: #a6a6a2;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-nav-item:hover,
+  .mobile-nav-item:active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #efefe5;
   }
 
   #bottomSheet {
